@@ -1,7 +1,6 @@
 package com.adrian.tema01.boletin01;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Ej06 {

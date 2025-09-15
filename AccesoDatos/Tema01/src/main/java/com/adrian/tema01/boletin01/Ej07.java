@@ -1,7 +1,8 @@
 package com.adrian.tema01.boletin01;
 
 import java.io.File;
-import java.util.Scanner;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 public class Ej07 {
     public static void main(String[] args) {
@@ -12,12 +13,16 @@ public class Ej07 {
 
 class GestionArchivos3 extends GestionArchivos2 {
     void leerBinario(String directorio, String archivo) {
-        File f = new File(directorio + "/" + archivo);
-        try (Scanner lector = new Scanner(f)) {
-            while (lector.hasNextByte())
-                System.out.println("%X" + lector.nextByte());
-
-        } catch (Exception e) {
+        File f = new File(directorio, archivo);
+        try (FileInputStream fis = new FileInputStream(f)) {
+            int byteLeido;
+            System.out.println("Contenido en hexadecimal:");
+            while ((byteLeido = fis.read()) != -1) {
+                // Use %02X to format the byte as a two-digit hexadecimal string
+                System.out.printf("%02X ", byteLeido);
+            }
+            System.out.println(); // New line for clean output
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
