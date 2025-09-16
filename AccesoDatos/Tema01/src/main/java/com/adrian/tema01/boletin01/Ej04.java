@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 
 public class Ej04 {
     public static void main(String[] args) {
-        // Comprobar la carpeta
+        System.out.println("Ejercicio 4");
         File f = new File("./src/main/java/com/adrian/tema01/boletin01/Ej04.java");
         System.out.println("Nombre: " + f.getName());
         System.out.println("Ruta absoluta: " + f.getAbsolutePath());

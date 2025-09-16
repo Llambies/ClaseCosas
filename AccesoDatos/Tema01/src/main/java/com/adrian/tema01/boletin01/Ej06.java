@@ -6,6 +6,7 @@ import java.util.Scanner;
 public class Ej06 {
 
     public static void main(String[] args) {
+        System.out.println("Ejercicio 6");
         GestionArchivos2 ga = new GestionArchivos2();
         ga.leerArchivo("./src/main/java/com/adrian/tema01/boletin01", "Ej06.java");
 

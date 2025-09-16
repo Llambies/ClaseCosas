@@ -6,6 +6,7 @@ import java.io.IOException;
 
 public class Ej07 {
     public static void main(String[] args) {
+        System.out.println("Ejercicio 7");
         GestionArchivos3 ga = new GestionArchivos3();
         ga.leerBinario("./src/main/java/com/adrian/tema01/boletin01", "Ej07.bin");
     }

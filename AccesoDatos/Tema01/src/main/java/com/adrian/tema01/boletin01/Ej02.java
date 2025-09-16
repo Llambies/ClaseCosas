@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 public class Ej02   {
     public static void main(String[] args) {
-        // Comprobar la carpeta
+        System.out.println("Ejercicio 2");
         File f = new File("./src/main/java/com/adrian/tema01/boletin01");
         System.out.println(Arrays.toString(f.list()));
     }
