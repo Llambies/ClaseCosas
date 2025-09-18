@@ -1,0 +1,90 @@
+package com.adrian.tema01.boletin01;package com.adrian.tema01.boletin01;
+
+import java.io.File;import java.io.File;
+import java.time.LocalDateTime;import java.util.Arrays;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;public class Ej05 {
+
+public class Ej04 {    public static void main(String[] args) {
+    public static void main(String[] args) {        System.out.println("Ejercicio 5");
+        System.out.println("Ejercicio 4");        GestionArchivos ga = new GestionArchivos();
+        File f = new File("./src/main/java/com/adrian/tema01/boletin01/Ej04.java");        ga.CrearArchivo("./src/main/java/com/adrian/tema01/boletin01", "Prueba.txt");
+        System.out.println("Nombre: " + f.getName());        ga.listarDirectorio("./src/main/java/com/adrian/tema01/boletin01");
+        System.out.println("Ruta absoluta: " + f.getAbsolutePath());        ga.verInfo("./src/main/java/com/adrian/tema01/boletin01", "Prueba.txt");
+        System.out.println("Oculto?: " + f.isHidden());
+        System.out.println("Leer?: " + f.canRead());    }
+        System.out.println("Escribir?: " + f.canWrite());
+
+        long milliseconds = f.lastModified();}
+        LocalDateTime dateTime = LocalDateTime.ofEpochSecond(milliseconds / 1000, 0, ZoneOffset.UTC);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm:ss");
+        String formattedDate = dateTime.format(formatter);class GestionArchivos {
+    public boolean CrearArchivo(String directorio, String archivo) {
+        System.out.println("Ult Mod: " + formattedDate);        try {
+            File f = new File(directorio + "/" + archivo);
+        f.setLastModified(12);            return f.createNewFile();
+        milliseconds = f.lastModified();        } catch (Exception e) {
+        dateTime = LocalDateTime.ofEpochSecond(milliseconds / 1000, 0, ZoneOffset.UTC);            e.printStackTrace();
+        formatter = DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm:ss");            return false;
+        formattedDate = dateTime.format(formatter);        }
+
+        System.out.println("Ult Mod: " + formattedDate);    }
+        System.out.println("Size en bytes: " + f.length());    void listarDirectorio(String directorio){
+        System.out.println("Size en KB: " + f.length() / 1024.0);        File f = new File(directorio);
+        System.out.println("Size en MB: " + f.length() / 1024.0 / 1024);        System.out.println(Arrays.toString(f.list()));
+
+    }    }
+}
+    void verInfo(String directorio, String archivo){
+        File f = new File(directorio + "/" + archivo);
+        System.out.println("Nombre: " + f.getName());
+        System.out.println("Ruta absoluta: " + f.getAbsolutePath());
+        System.out.println("Leer?: " + f.canRead());
+        System.out.println("Escribir?: " + f.canWrite());
+    }
+}
+package com.adrian.tema01.boletin01;package com.adrian.tema01.boletin01;
+
+import java.io.File;import java.io.File;
+import java.time.LocalDateTime;import java.util.Arrays;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;public class Ej05 {
+
+public class Ej04 {    public static void main(String[] args) {
+    public static void main(String[] args) {        System.out.println("Ejercicio 5");
+        System.out.println("Ejercicio 4");        GestionArchivos ga = new GestionArchivos();
+        File f = new File("./src/main/java/com/adrian/tema01/boletin01/Ej04.java");        ga.CrearArchivo("./src/main/java/com/adrian/tema01/boletin01", "Prueba.txt");
+        System.out.println("Nombre: " + f.getName());        ga.listarDirectorio("./src/main/java/com/adrian/tema01/boletin01");
+        System.out.println("Ruta absoluta: " + f.getAbsolutePath());        ga.verInfo("./src/main/java/com/adrian/tema01/boletin01", "Prueba.txt");
+        System.out.println("Oculto?: " + f.isHidden());
+        System.out.println("Leer?: " + f.canRead());    }
+        System.out.println("Escribir?: " + f.canWrite());
+
+        long milliseconds = f.lastModified();}
+        LocalDateTime dateTime = LocalDateTime.ofEpochSecond(milliseconds / 1000, 0, ZoneOffset.UTC);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm:ss");
+        String formattedDate = dateTime.format(formatter);class GestionArchivos {
+    public boolean CrearArchivo(String directorio, String archivo) {
+        System.out.println("Ult Mod: " + formattedDate);        try {
+            File f = new File(directorio + "/" + archivo);
+        f.setLastModified(12);            return f.createNewFile();
+        milliseconds = f.lastModified();        } catch (Exception e) {
+        dateTime = LocalDateTime.ofEpochSecond(milliseconds / 1000, 0, ZoneOffset.UTC);            e.printStackTrace();
+        formatter = DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm:ss");            return false;
+        formattedDate = dateTime.format(formatter);        }
+
+        System.out.println("Ult Mod: " + formattedDate);    }
+        System.out.println("Size en bytes: " + f.length());    void listarDirectorio(String directorio){
+        System.out.println("Size en KB: " + f.length() / 1024.0);        File f = new File(directorio);
+        System.out.println("Size en MB: " + f.length() / 1024.0 / 1024);        System.out.println(Arrays.toString(f.list()));
+
+    }    }
+}
+    void verInfo(String directorio, String archivo){
+        File f = new File(directorio + "/" + archivo);
+        System.out.println("Nombre: " + f.getName());
+        System.out.println("Ruta absoluta: " + f.getAbsolutePath());
+        System.out.println("Leer?: " + f.canRead());
+        System.out.println("Escribir?: " + f.canWrite());
+    }
+}
