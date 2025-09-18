@@ -19,10 +19,9 @@ class GestionArchivos3 extends GestionArchivos2 {
             int byteLeido;
             System.out.println("Contenido en hexadecimal:");
             while ((byteLeido = fis.read()) != -1) {
-                // Use %02X to format the byte as a two-digit hexadecimal string
                 System.out.printf("%02X ", byteLeido);
             }
-            System.out.println(); // New line for clean output
+            System.out.println();
         } catch (IOException e) {
             e.printStackTrace();
         }
