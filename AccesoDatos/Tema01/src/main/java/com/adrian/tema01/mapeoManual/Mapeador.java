@@ -22,13 +22,11 @@ public class Mapeador<K, V> {
 
     public void agregar(K key, V value) {
         ArrayList<Integer> indices = calcularIndices(key);
-        System.out.println(indices);
         insertar(indices, 0, value, baser);
     }
 
     void insertar(ArrayList<Integer> key, int keyActual, V value, Object[] lista) {
         if (keyActual == key.size() - 1) {
-            // Condición base: almacena el valor
             lista[key.get(keyActual)] = value;
             return;
         }
@@ -42,14 +40,12 @@ public class Mapeador<K, V> {
 
     public V buscar(K key) {
         ArrayList<Integer> indices = calcularIndices(key);
-        System.out.println(indices);
         return obtener(indices, 0, baser);
 
     }
 
     V obtener(ArrayList<Integer> key, int keyActual, Object[] lista) {
-        System.out.println("keyActual: " + keyActual + " key: " + key.get(keyActual));
-        System.out.println(lista);
+
         if (lista[key.get(keyActual)] == null) {
             return null;
         }

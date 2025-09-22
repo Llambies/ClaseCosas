@@ -13,8 +13,6 @@ public class Ej05 {
         ga.verInfo("./src/main/java/com/adrian/tema01/boletin01", "Prueba.txt");
 
     }
-
-
 }
 
 
@@ -29,13 +27,14 @@ class GestionArchivos {
         }
 
     }
-    void listarDirectorio(String directorio){
+
+    void listarDirectorio(String directorio) {
         File f = new File(directorio);
         System.out.println(Arrays.toString(f.list()));
 
     }
 
-    void verInfo(String directorio, String archivo){
+    void verInfo(String directorio, String archivo) {
         File f = new File(directorio + "/" + archivo);
         System.out.println("Nombre: " + f.getName());
         System.out.println("Ruta absoluta: " + f.getAbsolutePath());
