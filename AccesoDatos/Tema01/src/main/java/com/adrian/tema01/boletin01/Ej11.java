@@ -37,9 +37,7 @@ public class Ej11 {
         try (Scanner sc1 = new Scanner(f1)) {
             try (Scanner sc2 = new Scanner(f2)) {
                 while (sc1.hasNextLine() && sc2.hasNextLine()) {
-                    String linea1 = sc1.nextLine();
-                    String linea2 = sc2.nextLine();
-                    contenido.append(linea1 + linea2);
+                    contenido.append(sc1.nextLine()).append(sc2.nextLine());
                     contenido.append("\n");
                 }
 
