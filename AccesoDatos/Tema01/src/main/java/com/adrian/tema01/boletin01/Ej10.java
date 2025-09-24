@@ -19,10 +19,19 @@ public class Ej10 {
             System.out.println("Se ha proporcionado solo un parametro");
             return;
         }
+
         String archivo1 = args[0];
         File f1 = new File(archivo1);
+        if (!f1.exists()) {
+            System.out.println("El primer archivo no existe");
+            return;
+        }
         String archivo2 = args[1];
         File f2 = new File(archivo2);
+        if (!f2.exists()) {
+            System.out.println("El segundo archivo no existe");
+            return;
+        }
         StringBuilder contenido = new StringBuilder();
         try (Scanner sc1 = new Scanner(f1)) {
             while (sc1.hasNextLine()) {
