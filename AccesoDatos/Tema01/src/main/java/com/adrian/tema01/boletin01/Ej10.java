@@ -9,6 +9,16 @@ import java.util.Scanner;
 public class Ej10 {
     public static void main(String[] args) {
         System.out.println("Ejercicio 10");
+        if (args.length < 1) {
+            System.out.println("No se ha proporcionado parametros");
+            return;
+        } else if (args.length > 2) {
+            System.out.println("Se ha proporcionado más de dos parametros");
+            return;
+        } else if (args.length < 2) {
+            System.out.println("Se ha proporcionado solo un parametro");
+            return;
+        }
         String archivo1 = args[0];
         File f1 = new File(archivo1);
         String archivo2 = args[1];
