@@ -13,16 +13,18 @@ import java.util.Scanner;
  * original más “_conLetras” en la parte del nombre.
  */
 public class Ej01 {
-
-
     public static void main(String[] args) {
         DNIFileFormater.format("./src/main/java/com/adrian/tema01/boletin02/dni.txt");
     }
-
 }
 
 class DNIFileFormater {
 
+    /**
+     * Lee un fichero con DNI sin letra o incompleto y guarda una copia con DNI y letra.
+     *
+     * @param path
+     */
     public static void format(String path) {
         File file = new File(path);
         StringBuilder content = new StringBuilder();
@@ -44,6 +46,14 @@ class DNIFileFormater {
         }
     }
 
+    /**
+     * Recibe un String con el numero del DNI.
+     * Si es menos de 8 rellena con 0's a la izquierda.
+     * Si es mayor lo corta a 8.
+     *
+     * @param dni
+     * @return
+     */
     static String rellenadorNumeros(String dni) {
         if (dni.length() > 8) {
             return dni.substring(0, 8);
@@ -53,6 +63,12 @@ class DNIFileFormater {
         return dni;
     }
 
+    /**
+     * Calcula la letra correspondiente al DNI.
+     *
+     * @param dni
+     * @return
+     */
     static char calculadorLetra(int dni) {
         String letras = "TRWAGMYFPDXBNJZSQVHLCKE";
         return letras.charAt(dni % 23);
