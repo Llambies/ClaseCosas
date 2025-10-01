@@ -6,15 +6,22 @@ import java.util.*;
 import java.text.SimpleDateFormat;
 
 public class Ej02 {
+    public static void main(String[] args) {
+        Alumno alumno1 = new Alumno(1234, "Pepe", "Marin", "Roig", new Date());
+        Alumno alumno2 = new Alumno(1235, "Juan", "Gomez", "Martines", new Date());
 
+        GestionAlumnos gestionAlumnos = new GestionAlumnos("../src/main/java/com/adrian/tema01/boletin02/alumnos.txt");
+
+
+    }
 }
 
 class Alumno {
-    int NIA;
-    String nombre;
-    String apellido1;
-    String apellido2;
-    Date fechaNacimiento;
+    final int NIA;
+    final String nombre;
+    final String apellido1;
+    final String apellido2;
+    final Date fechaNacimiento;
 
     public Alumno(int NIA, String nombre, String apellido1, String apellido2, Date fechaNacimiento) {
         this.NIA = NIA;
@@ -49,7 +56,7 @@ class GestionAlumnos {
     String pathArchivo;
     ArrayList<Alumno> alumnos;
 
-    public GestionAlumnos(String pathArchivo) throws Exception {
+    public GestionAlumnos(String pathArchivo) {
         this.pathArchivo = pathArchivo;
         alumnos = new ArrayList<Alumno>();
         File file = new File(pathArchivo);
