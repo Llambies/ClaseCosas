@@ -8,7 +8,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import com.google.gson.Gson;
 
 /**
  * Cargar el dataset inventario.json y mostrar la ubicación del producto
