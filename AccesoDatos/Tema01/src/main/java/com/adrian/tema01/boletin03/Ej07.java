@@ -2,6 +2,12 @@ package com.adrian.tema01.boletin03;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.util.ArrayList;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
 import com.google.gson.Gson;
 
 /**
@@ -17,7 +23,7 @@ public class Ej07 {
         try {
             File inputFile = new File(PATH);
             String content = new String(Files.readAllBytes(inputFile.toPath()));
-            almacen = new Gson().fromJson(content, Almacen.class);
+            almacen = parserAlmacen(new JSONTokener(content));
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -25,8 +31,34 @@ public class Ej07 {
             System.out.println("\n");
             System.out.println("Introduce el id del producto: ");
             String id = System.console().readLine();
-            System.out.println("Producto: " + almacen.getProducto(id).nombre + " - Ubicación: " + almacen.getProducto(id).ubicacion.pasillo + " - " + almacen.getProducto(id).ubicacion.estante);
+            System.out.println("Producto: " + almacen.getProducto(id).nombre + " - Ubicación: "
+                    + almacen.getProducto(id).ubicacion.pasillo + " - " + almacen.getProducto(id).ubicacion.estante);
         }
+    }
+
+    static Almacen parserAlmacen(JSONTokener tokener) {
+        JSONObject almacenJson = new JSONObject(tokener);
+        String almacen = almacenJson.getString("almacen");
+        String actualizado = almacenJson.getString("actualizado");
+        ArrayList<Producto> productos = parserProductos(almacenJson.getJSONArray("productos"));
+        return new Almacen(almacen, actualizado, productos.toArray(new Producto[productos.size()]));
+    }
+
+    static ArrayList<Producto> parserProductos(JSONArray productosArray) {
+        ArrayList<Producto> productos = new ArrayList<Producto>();
+        for (int i = 0; i < productosArray.length(); i++) {
+            JSONObject producto = productosArray.getJSONObject(i);
+            String id = producto.getString("id");
+            String nombre = producto.getString("nombre");
+            int stock = producto.getInt("stock");
+            double precio = producto.getDouble("precio");
+            String[] tags = producto.getJSONArray("tags").toString().split(",");
+            JSONObject ubicacion = producto.getJSONObject("ubicacion");
+            int pasillo = ubicacion.getInt("pasillo");
+            String estante = ubicacion.getString("estante");
+            productos.add(new Producto(id, nombre, stock, precio, tags, new Ubicacion(pasillo, estante)));
+        }
+        return productos;
     }
 }
 

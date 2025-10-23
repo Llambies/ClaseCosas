@@ -18,45 +18,125 @@ public class Ej03 {
 
     public static void main(String[] args) {
         List<Libro> libros = new ArrayList<>();
+
+        File inputFile = new File(PATH);
+        if (!inputFile.exists() || !inputFile.canRead()) {
+            System.err.println("Error: No se puede leer el archivo " + PATH);
+            return;
+        }
+
         try {
-            File inputFile = new File(PATH);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(inputFile);
             doc.getDocumentElement().normalize();
 
             NodeList nList = doc.getElementsByTagName("libro");
+            if (nList.getLength() == 0) {
+                System.out.println("No se encontraron libros en el archivo.");
+                return;
+            }
 
             for (int i = 0; i < nList.getLength(); i++) {
-                Node nNode = nList.item(i);
+                try {
+                    Node nNode = nList.item(i);
 
-                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element eElement = (Element) nNode;
+                    if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                        Element eElement = (Element) nNode;
 
-                    String isbn = eElement.getAttribute("isbn");
-                    String titulo = eElement.getElementsByTagName("titulo").item(0).getTextContent();
-                    int anio = Integer.parseInt(eElement.getElementsByTagName("anio").item(0).getTextContent());
-                    ArrayList<String> generos = new ArrayList<>();
-                    Element elementGeneros = (Element) eElement.getElementsByTagName("generos").item(0);
-                    for (int j = 0; j < elementGeneros.getElementsByTagName("genero").getLength(); j++) {
-                        generos.add(elementGeneros.getElementsByTagName("genero").item(j).getTextContent());
+                        String isbn = eElement.hasAttribute("isbn") ? eElement.getAttribute("isbn")
+                                : "ISBN_DESCONOCIDO";
+
+                        String titulo = "";
+                        try {
+                            titulo = eElement.getElementsByTagName("titulo").item(0).getTextContent();
+                        } catch (Exception e) {
+                            System.err.println("Advertencia: Libro sin título, se omitirá");
+                            continue;
+                        }
+
+                        int anio = 0;
+                        try {
+                            anio = Integer.parseInt(eElement.getElementsByTagName("anio").item(0).getTextContent());
+                        } catch (NumberFormatException | NullPointerException e) {
+                            System.err.println("Advertencia: Año inválido para el libro: " + titulo);
+                            anio = 0; // Default value
+                        }
+
+                        ArrayList<String> generos = new ArrayList<>();
+                        try {
+                            Element elementGeneros = (Element) eElement.getElementsByTagName("generos").item(0);
+                            if (elementGeneros != null) {
+                                for (int j = 0; j < elementGeneros.getElementsByTagName("genero").getLength(); j++) {
+                                    String genero = elementGeneros.getElementsByTagName("genero").item(j)
+                                            .getTextContent();
+                                    if (genero != null && !genero.trim().isEmpty()) {
+                                        generos.add(genero.trim());
+                                    }
+                                }
+                            }
+                        } catch (Exception e) {
+                            System.err.println("Advertencia: Error al leer géneros para el libro: " + titulo);
+                        }
+
+                        boolean disponible = false;
+                        try {
+                            String dispText = eElement.getElementsByTagName("disponible").item(0).getTextContent();
+                            disponible = Boolean.parseBoolean(dispText);
+                        } catch (Exception e) {
+                            System.err
+                                    .println("Advertencia: Estado de disponibilidad inválido para el libro: " + titulo);
+                        }
+
+                        Autor autor = null;
+                        try {
+                            Element elementAutor = (Element) eElement.getElementsByTagName("autor").item(0);
+                            if (elementAutor != null) {
+                                String nombreAutor = elementAutor.getElementsByTagName("nombre").item(0)
+                                        .getTextContent();
+                                String nacimientoAutor = elementAutor.getElementsByTagName("nacimiento").item(0)
+                                        .getTextContent();
+                                if (nombreAutor != null && !nombreAutor.trim().isEmpty()) {
+                                    autor = new Autor(nombreAutor.trim(),
+                                            nacimientoAutor != null ? nacimientoAutor.trim() : "");
+                                }
+                            }
+
+                            if (autor == null) {
+                                autor = new Autor("Autor Desconocido", "");
+                                System.err.println(
+                                        "Advertencia: Información de autor no encontrada para el libro: " + titulo);
+                            }
+
+                            Libro libro = new Libro(isbn, titulo, autor, anio, generos, disponible);
+                            libros.add(libro);
+
+                        } catch (Exception e) {
+                            System.err.println("Error procesando el autor del libro: " + titulo);
+                            if (titulo != null && !titulo.trim().isEmpty()) {
+                                autor = new Autor("Autor Desconocido", "");
+                                libros.add(new Libro(isbn, titulo, autor, anio, generos, disponible));
+                            }
+                        }
                     }
-                    boolean disponible = Boolean.parseBoolean(eElement.getElementsByTagName("disponible").item(0).getTextContent());
-                    Element elementAutor = (Element) eElement.getElementsByTagName("autor").item(0);
-                    String nombreAutor = elementAutor.getElementsByTagName("nombre").item(0).getTextContent();
-                    String nacimientoAutor = elementAutor.getElementsByTagName("nacimiento").item(0).getTextContent();
-                    
-                    Autor autor = new Autor(nombreAutor, nacimientoAutor);
-                    Libro libro = new Libro(isbn, titulo, autor, anio, generos, disponible);
-                    libros.add(libro);
+                } catch (Exception e) {
+                    System.err.println("Error procesando el libro en la posición " + i + ": " + e.getMessage());
                 }
             }
 
+        } catch (javax.xml.parsers.ParserConfigurationException e) {
+            System.err.println("Error de configuración del parser XML: " + e.getMessage());
+        } catch (org.xml.sax.SAXException e) {
+            System.err.println("Error al analizar el archivo XML: " + e.getMessage());
+        } catch (java.io.IOException e) {
+            System.err.println("Error de E/S al leer el archivo: " + e.getMessage());
         } catch (Exception e) {
+            System.err.println("Error inesperado: " + e.getMessage());
             e.printStackTrace();
         }
 
-        System.out.println("Nombres de los libros: " + libros.stream().map(libro -> libro.titulo).collect(Collectors.toList()));
+        System.out.println(
+                "Nombres de los libros: " + libros.stream().map(libro -> libro.titulo).collect(Collectors.toList()));
         HashMap<String, Integer> generos = new HashMap<>();
         for (Libro libro : libros) {
             for (String genero : libro.generos) {
@@ -67,7 +147,7 @@ public class Ej03 {
     }
 }
 
-class Libro{
+class Libro {
     String ISBN;
     String titulo;
     Autor autor;
@@ -85,7 +165,7 @@ class Libro{
     }
 }
 
-class Autor{
+class Autor {
     String nombre;
     String nacimiento;
 
