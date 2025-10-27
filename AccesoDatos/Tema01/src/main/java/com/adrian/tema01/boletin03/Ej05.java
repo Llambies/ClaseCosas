@@ -30,7 +30,8 @@ public class Ej05 {
             System.out.println("\n");
             System.out.println("Ejercicio 6");
             for (Alumno alumno : alumnosArray) {
-                System.out.println("Nombre: " + alumno.nombre + " - Nota mas alta: " + Arrays.stream(alumno.notas).max((nota1, nota2) -> Double.compare(nota1.nota, nota2.nota)).get().nota);
+                System.out.println("Nombre: " + alumno.nombre + " - Nota mas alta: " + Arrays.stream(alumno.notas)
+                        .max((nota1, nota2) -> Double.compare(nota1.nota, nota2.nota)).get().nota);
             }
             System.out.println("\n");
             double maxNotaMedia = 0;
@@ -42,7 +43,8 @@ public class Ej05 {
                     alumnoNotaMediaMasAlta = alumno;
                 }
             }
-            System.out.println("Nombre: " + alumnoNotaMediaMasAlta.nombre + " - con la nota media mas alta: " + maxNotaMedia);
+            System.out.println(
+                    "Nombre: " + alumnoNotaMediaMasAlta.nombre + " - con la nota media mas alta: " + maxNotaMedia);
         } catch (Exception e) {
             e.printStackTrace();
         }
