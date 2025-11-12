@@ -85,13 +85,30 @@ public class BaseDeDatos {
     public List<String[]> obtenerCiclistasPorEquipo(int id_equipo) throws SQLException {
         List<String[]> ciclistas = new ArrayList<>();
         try (Statement stmt = conexion.createStatement()) {
-            try (ResultSet rs = stmt.executeQuery("""
-                    SELECT * FROM ciclistas
-                    WHERE id_equipo = %d
-                    """.formatted(id_equipo))) {
+            String query;
+            if (id_equipo == 0) {
+                query = """
+                        SELECT ciclistas.id_ciclista, ciclistas.nombre, ciclistas.pais, equipos.nombre AS nombre_equipo
+                        FROM ciclistas
+                        JOIN equipos ON ciclistas.id_equipo = equipos.id_equipo
+                        ORDER BY equipos.nombre, ciclistas.nombre
+                        """;
+            } else {
+                query = """
+                        SELECT id_ciclista, nombre, pais, equipos.nombre AS nombre_equipo FROM ciclistas
+                        JOIN equipos ON ciclistas.id_equipo = equipos.id_equipo
+                        WHERE id_equipo = %d
+                        """.formatted(id_equipo);
+            }
+            try (ResultSet rs = stmt.executeQuery(query)) {
                 while (rs.next()) {
-                    ciclistas.add(new String[] { String.valueOf(rs.getInt("id_ciclista")),
-                            rs.getString("nombre"), rs.getString("pais") });
+                    if (id_equipo == 0) {
+                        ciclistas.add(new String[] { String.valueOf(rs.getInt("id_ciclista")),
+                                rs.getString("nombre"), rs.getString("pais"), rs.getString("nombre_equipo") });
+                    } else {
+                        ciclistas.add(new String[] { String.valueOf(rs.getInt("id_ciclista")),
+                                rs.getString("nombre"), rs.getString("pais"), rs.getString("nombre_equipo") });
+                    }
                 }
             } catch (SQLException e) {
                 throw new SQLException("Error al obtener ciclistas: " + e.getMessage());

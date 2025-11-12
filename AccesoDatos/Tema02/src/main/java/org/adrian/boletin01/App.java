@@ -105,18 +105,19 @@ public class App {
     }
 
     static void Ej02() {
-        TablaAscii tabla = new TablaAscii("ID", "Nombre", "País");
+        TablaAscii tablaEquipos = new TablaAscii("ID", "Nombre", "País");
 
         try {
             for (String[] equipo : bd.obtenerEquipos()) {
-                tabla.agregarFila(String.valueOf(equipo[0]), equipo[1], equipo[2]);
+                tablaEquipos.agregarFila(String.valueOf(equipo[0]), equipo[1], equipo[2]);
             }
         } catch (SQLException e) {
             System.out.println("Error al obtener equipos: " + e.getMessage());
             return;
         }
-        System.out.println(tabla.renderizar());
+        System.out.println(tablaEquipos.renderizar());
 
+        TablaAscii tablaCiclistas = new TablaAscii("ID", "Nombre", "País", "Equipo");
         System.out.println("Introduce el ID del equipo");
         Scanner sc = new Scanner(System.in);
         String entrada = sc.nextLine();
@@ -124,7 +125,7 @@ public class App {
 
         try {
             for (String[] equipo : bd.obtenerCiclistasPorEquipo(id)) {
-                tabla.agregarFila(String.valueOf(equipo[0]), equipo[1], equipo[2]);
+                tablaCiclistas.agregarFila(String.valueOf(equipo[0]), equipo[1], equipo[2], equipo[3]);
             }
         } catch (SQLException e) {
             System.out.println("Error al obtener equipos: " + e.getMessage());
@@ -132,7 +133,7 @@ public class App {
         } finally {
             sc.close();
         }
-        System.out.println(tabla.renderizar());
+        System.out.println(tablaCiclistas.renderizar());
     }
 
     static void Ej03b() {
