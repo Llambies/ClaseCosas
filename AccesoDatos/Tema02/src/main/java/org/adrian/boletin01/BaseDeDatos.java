@@ -192,7 +192,7 @@ public class BaseDeDatos {
                             FROM resultados_etapa
                             JOIN ciclistas ON resultados_etapa.id_ciclista = ciclistas.id_ciclista
                             JOIN etapas ON resultados_etapa.id_etapa = etapas.id_etapa
-                            WHERE ciclistas.id_ciclista = %d
+                            WHERE ciclistas.id_ciclista = %d AND etapas.finalizada = true
                             GROUP BY ciclistas.id_ciclista
                             """
                             .formatted(id_ciclista))) {
@@ -221,7 +221,7 @@ public class BaseDeDatos {
                     JOIN ciclistas ON resultados_etapa.id_ciclista = ciclistas.id_ciclista
                     JOIN equipos ON ciclistas.id_equipo = equipos.id_equipo
                     WHERE resultados_etapa.id_etapa = %d
-                    ORDER BY resultados_etapa.tiempo ASC
+                    ORDER BY EXTRACT(EPOCH FROM resultados_etapa.tiempo) ASC
                     """.formatted(id_etapa))) {
                 int position = 1;
                 while (rs.next()) {

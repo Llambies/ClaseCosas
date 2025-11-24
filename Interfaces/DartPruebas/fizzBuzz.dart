@@ -11,6 +11,7 @@ void printFizzBuzz() {
     }
   }
 }
+
 void main(List<String> args) {
   printFizzBuzz();
 }
