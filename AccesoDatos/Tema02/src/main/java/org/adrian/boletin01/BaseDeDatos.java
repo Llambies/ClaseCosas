@@ -46,11 +46,6 @@ public class BaseDeDatos {
         String url = "jdbc:" + DB_DRIVER + "://" + DB_HOST + ":" + DB_PORT + "/" + DB_NAME;
         try {
             conexion = DriverManager.getConnection(url, DB_USER, DB_PASSWORD);
-            try (Statement stmt = conexion.createStatement()) {
-                return;
-            } catch (SQLException e) {
-                throw new SQLException("Error al conectar a la base de datos: " + e.getMessage());
-            }
         } catch (SQLTimeoutException e) {
             throw new SQLTimeoutException("Timeout al conectar a la base de datos: " + e.getMessage());
         } catch (SQLException e) {
@@ -68,154 +63,325 @@ public class BaseDeDatos {
         }
     }
 
-    public List<Equipo> listarEquipos() throws SQLException {
+    public List<String[]> obtenerEquipos() throws SQLException {
+        List<String[]> equipos = new ArrayList<>();
         try (Statement stmt = conexion.createStatement()) {
-            try (ResultSet rs = stmt.executeQuery("SELECT * FROM equipos")) {
-                List<Equipo> equipos = new ArrayList<>();
+            try (ResultSet rs = stmt.executeQuery("""
+                    SELECT * FROM equipos
+                    """)) {
                 while (rs.next()) {
-                    equipos.add(new Equipo(rs.getInt("id_equipo"), rs.getString("nombre"), rs.getString("pais")));
+                    equipos.add(new String[] { String.valueOf(rs.getInt("id_equipo")),
+                            rs.getString("nombre"), rs.getString("pais") });
                 }
-                return equipos;
+            } catch (SQLException e) {
+                throw new SQLException("Error al obtener equipos: " + e.getMessage());
             }
         } catch (SQLException e) {
-            throw new SQLException("Error al listar equipos: " + e.getMessage());
+            throw new SQLException("Error al obtener equipos: " + e.getMessage());
         }
+        return equipos;
     }
 
-    public List<Ciclista> listarCiclistasPorEquipo(int id_equipo) throws SQLException {
+    public List<String[]> obtenerCiclistasPorEquipo(int id_equipo) throws SQLException {
+        List<String[]> ciclistas = new ArrayList<>();
         try (Statement stmt = conexion.createStatement()) {
-            try (ResultSet rs = stmt.executeQuery("SELECT * FROM ciclistas WHERE id_equipo = " + id_equipo)) {
-                List<Ciclista> ciclistas = new ArrayList<>();
+            String query;
+            if (id_equipo == 0) {
+                query = """
+                        SELECT ciclistas.id_ciclista, ciclistas.nombre, ciclistas.pais, equipos.nombre AS nombre_equipo
+                        FROM ciclistas
+                        JOIN equipos ON ciclistas.id_equipo = equipos.id_equipo
+                        ORDER BY equipos.nombre, ciclistas.nombre
+                        """;
+            } else {
+                query = """
+                        SELECT id_ciclista, nombre, pais, equipos.nombre AS nombre_equipo FROM ciclistas
+                        JOIN equipos ON ciclistas.id_equipo = equipos.id_equipo
+                        WHERE id_equipo = %d
+                        """.formatted(id_equipo);
+            }
+            try (ResultSet rs = stmt.executeQuery(query)) {
                 while (rs.next()) {
-                    ciclistas.add(new Ciclista(rs.getInt("id_ciclista"), rs.getInt("id_equipo"), rs.getString("nombre"),
-                            rs.getString("pais"), rs.getDate("fecha_nac")));
+                    if (id_equipo == 0) {
+                        ciclistas.add(new String[] { String.valueOf(rs.getInt("id_ciclista")),
+                                rs.getString("nombre"), rs.getString("pais"), rs.getString("nombre_equipo") });
+                    } else {
+                        ciclistas.add(new String[] { String.valueOf(rs.getInt("id_ciclista")),
+                                rs.getString("nombre"), rs.getString("pais"), rs.getString("nombre_equipo") });
+                    }
                 }
-                return ciclistas;
+            } catch (SQLException e) {
+                throw new SQLException("Error al obtener ciclistas: " + e.getMessage());
             }
         } catch (SQLException e) {
-            throw new SQLException("Error al listar ciclistas: " + e.getMessage());
+            throw new SQLException("Error al obtener ciclistas: " + e.getMessage());
         }
+        return ciclistas;
     }
 
-    public List<Etapa> listarEtapas() throws SQLException {
+    public List<String[]> obtenerEtapas() throws SQLException {
+        List<String[]> etapas = new ArrayList<>();
         try (Statement stmt = conexion.createStatement()) {
-            try (ResultSet rs = stmt.executeQuery("SELECT * FROM etapas")) {
-                List<Etapa> etapas = new ArrayList<>();
+            try (ResultSet rs = stmt.executeQuery("""
+                    SELECT * FROM etapas
+                    """)) {
                 while (rs.next()) {
-                    etapas.add(new Etapa(rs.getInt("id_etapa"), rs.getInt("id_carrera"), rs.getInt("num_etapa"),
-                            rs.getDate("fecha"), rs.getString("salida"), rs.getString("llegada"),
-                            rs.getDouble("distancia_km"), TipoEtapa.valueOf(rs.getString("tipo"))));
+                    etapas.add(new String[] { String.valueOf(rs.getInt("id_etapa")),
+                            String.valueOf(rs.getInt("id_carrera")), String.valueOf(rs.getInt("num_etapa")),
+                            rs.getString("fecha"), rs.getString("salida"), rs.getString("llegada"),
+                            String.valueOf(rs.getDouble("distancia_km")), rs.getString("tipo") });
                 }
-                return etapas;
+            } catch (SQLException e) {
+                throw new SQLException("Error al obtener etapas: " + e.getMessage());
             }
         } catch (SQLException e) {
-            throw new SQLException("Error al listar etapas: " + e.getMessage());
+            throw new SQLException("Error al obtener etapas: " + e.getMessage());
         }
+        return etapas;
     }
 
-    public List<Carrera> listarCarreras() throws SQLException {
+    public List<String[]> resumenPorTipoEtapa() throws SQLException {
+        List<String[]> etapas = new ArrayList<>();
         try (Statement stmt = conexion.createStatement()) {
-            try (ResultSet rs = stmt.executeQuery("SELECT * FROM carreras")) {
-                List<Carrera> carreras = new ArrayList<>();
+            try (ResultSet rs = stmt.executeQuery("""
+                    SELECT tipo,
+                           COUNT(*) AS cantidad,
+                           SUM(distancia_km) AS distancia_total
+                    FROM etapas
+                    GROUP BY tipo
+                    """)) {
                 while (rs.next()) {
-                    carreras.add(new Carrera(rs.getInt("id_carrera"), rs.getString("nombre"), rs.getInt("anio"),
-                            rs.getDate("fecha_inicio"), rs.getDate("fecha_fin")));
+                    etapas.add(new String[] { rs.getString("tipo"), String.valueOf(rs.getInt("cantidad")),
+                            String.valueOf(rs.getDouble("distancia_total")) });
                 }
-                return carreras;
+            } catch (SQLException e) {
+                throw new SQLException("Error al obtener etapas: " + e.getMessage());
             }
         } catch (SQLException e) {
-            throw new SQLException("Error al listar carreras: " + e.getMessage());
+            throw new SQLException("Error al obtener etapas: " + e.getMessage());
         }
+        return etapas;
     }
 
-    public List<ResultadosEtapa> listarResultadosEtapa() throws SQLException {
+    public List<String[]> obtenerCiclistas() throws SQLException {
+        List<String[]> ciclistas = new ArrayList<>();
         try (Statement stmt = conexion.createStatement()) {
-            try (ResultSet rs = stmt.executeQuery("SELECT * FROM resultados_etapa")) {
-                List<ResultadosEtapa> resultadosEtapa = new ArrayList<>();
+            try (ResultSet rs = stmt.executeQuery("""
+                    SELECT * FROM ciclistas
+                    """)) {
                 while (rs.next()) {
-                    resultadosEtapa.add(new ResultadosEtapa(rs.getInt("id_etapa"), rs.getInt("id_ciclista"),
-                            rs.getInt("posicion"), rs.getString("tiempo"), rs.getString("diferencia"),
-                            rs.getString("estado")));
+                    ciclistas.add(new String[] { String.valueOf(rs.getInt("id_ciclista")),
+                            rs.getString("nombre") });
                 }
-                return resultadosEtapa;
+            } catch (SQLException e) {
+                throw new SQLException("Error al obtener ciclistas: " + e.getMessage());
             }
         } catch (SQLException e) {
-            throw new SQLException("Error al listar resultados de etapa: " + e.getMessage());
+            throw new SQLException("Error al obtener ciclistas: " + e.getMessage());
         }
+        return ciclistas;
     }
 
-    public List<ResultadosSprint> listarResultadosSprint() throws SQLException {
+    public String[] velocidadMediaPorCiclista(int id_ciclista) throws SQLException {
+        String[] dato = new String[2];
         try (Statement stmt = conexion.createStatement()) {
-            try (ResultSet rs = stmt.executeQuery("SELECT * FROM resultados_sprint")) {
-                List<ResultadosSprint> resultadosSprint = new ArrayList<>();
+            try (ResultSet rs = stmt.executeQuery(
+                    """
+                            SELECT ciclistas.id_ciclista,
+                                   AVG(etapas.distancia_km / (EXTRACT(EPOCH FROM resultados_etapa.tiempo) / 3600)) AS velocidad_media
+                            FROM resultados_etapa
+                            JOIN ciclistas ON resultados_etapa.id_ciclista = ciclistas.id_ciclista
+                            JOIN etapas ON resultados_etapa.id_etapa = etapas.id_etapa
+                            WHERE ciclistas.id_ciclista = %d AND etapas.finalizada = true
+                            GROUP BY ciclistas.id_ciclista
+                            """
+                            .formatted(id_ciclista))) {
                 while (rs.next()) {
-                    resultadosSprint.add(new ResultadosSprint(rs.getInt("id_sprint"), rs.getInt("id_ciclista"),
-                            rs.getInt("posicion"), rs.getInt("puntos")));
+                    dato[0] = String.valueOf(rs.getInt("id_ciclista"));
+                    dato[1] = String.valueOf(rs.getDouble("velocidad_media"));
                 }
-                return resultadosSprint;
+            } catch (SQLException e) {
+                throw new SQLException("Error al obtener etapas: " + e.getMessage());
             }
         } catch (SQLException e) {
-            throw new SQLException("Error al listar resultados de sprint: " + e.getMessage());
+            throw new SQLException("Error al obtener etapas: " + e.getMessage());
         }
+        return dato;
     }
 
-    public List<PuntosMeta> listarPuntosMeta() throws SQLException {
+    public List<String[]> clasificacionPorEtapa(int id_etapa) throws SQLException {
+        List<String[]> clasificacion = new ArrayList<>();
         try (Statement stmt = conexion.createStatement()) {
-            try (ResultSet rs = stmt.executeQuery("SELECT * FROM puntos_meta")) {
-                List<PuntosMeta> puntosMeta = new ArrayList<>();
+            try (ResultSet rs = stmt.executeQuery("""
+                    SELECT resultados_etapa.id_ciclista,
+                           ciclistas.nombre AS nombre_ciclista,
+                           equipos.nombre AS nombre_equipo,
+                           resultados_etapa.tiempo
+                    FROM resultados_etapa
+                    JOIN ciclistas ON resultados_etapa.id_ciclista = ciclistas.id_ciclista
+                    JOIN equipos ON ciclistas.id_equipo = equipos.id_equipo
+                    WHERE resultados_etapa.id_etapa = %d
+                    ORDER BY EXTRACT(EPOCH FROM resultados_etapa.tiempo) ASC
+                    """.formatted(id_etapa))) {
+                int position = 1;
                 while (rs.next()) {
-                    puntosMeta.add(new PuntosMeta(rs.getInt("id_etapa"), rs.getInt("id_ciclista"),
-                            rs.getInt("posicion"), rs.getInt("puntos")));
+                    clasificacion.add(new String[] {
+                            String.valueOf(position),
+                            rs.getString("nombre_ciclista"),
+                            rs.getString("nombre_equipo"),
+                            rs.getString("tiempo")
+                    });
+                    position++;
                 }
-                return puntosMeta;
+            } catch (SQLException e) {
+                throw new SQLException("Error al obtener etapas: " + e.getMessage());
             }
         } catch (SQLException e) {
-            throw new SQLException("Error al listar puntos meta: " + e.getMessage());
+            throw new SQLException("Error al obtener etapas: " + e.getMessage());
         }
+        return clasificacion;
     }
 
-    public List<Puerto> listarPuertos() throws SQLException {
+    public List<String[]> clasificacionCiclistasEnMontaña() throws SQLException {
+        List<String[]> clasificacion = new ArrayList<>();
         try (Statement stmt = conexion.createStatement()) {
-            try (ResultSet rs = stmt.executeQuery("SELECT * FROM puertos")) {
-                List<Puerto> puertos = new ArrayList<>();
+            try (ResultSet rs = stmt.executeQuery("""
+                    SELECT resultados_puerto.id_ciclista,
+                           ciclistas.nombre AS nombre_ciclista,
+                           equipos.nombre AS nombre_equipo,
+                           SUM(resultados_puerto.puntos) AS puntos
+                    FROM resultados_puerto
+                    JOIN ciclistas ON resultados_puerto.id_ciclista = ciclistas.id_ciclista
+                    JOIN equipos ON ciclistas.id_equipo = equipos.id_equipo
+                    GROUP BY resultados_puerto.id_ciclista, ciclistas.nombre, equipos.nombre
+                    ORDER BY puntos DESC
+                    """)) {
+                int position = 1;
                 while (rs.next()) {
-                    puertos.add(new Puerto(rs.getInt("id_puerto"), rs.getInt("id_etapa"), rs.getString("nombre"),
-                            rs.getDouble("km"), rs.getString("categoria")));
+                    clasificacion.add(new String[] {
+                            String.valueOf(position),
+                            rs.getString("nombre_ciclista"),
+                            rs.getString("nombre_equipo"),
+                            String.valueOf(rs.getInt("puntos"))
+                    });
+                    position++;
                 }
-                return puertos;
+            } catch (SQLException e) {
+                throw new SQLException("Error al obtener etapas: " + e.getMessage());
             }
         } catch (SQLException e) {
-            throw new SQLException("Error al listar puertos: " + e.getMessage());
+            throw new SQLException("Error al obtener etapas: " + e.getMessage());
         }
+        return clasificacion;
     }
 
-    public List<Sprints> listarSprints() throws SQLException {
+    public List<String[]> clasificacionRegularidad() throws SQLException {
+        List<String[]> clasificacion = new ArrayList<>();
         try (Statement stmt = conexion.createStatement()) {
-            try (ResultSet rs = stmt.executeQuery("SELECT * FROM sprints")) {
-                List<Sprints> sprints = new ArrayList<>();
+            try (ResultSet rs = stmt.executeQuery(
+                    """
+                            SELECT ciclistas.id_ciclista,
+                                   ciclistas.nombre AS nombre_ciclista,
+                                   equipos.nombre AS nombre_equipo,
+                                   COALESCE(SUM(metas.puntos_meta), 0) + COALESCE(SUM(resultados_sprint.puntos), 0) AS puntos_totales
+                            FROM ciclistas
+                            JOIN equipos ON ciclistas.id_equipo = equipos.id_equipo
+                            LEFT JOIN metas ON ciclistas.id_ciclista = metas.id_ciclista
+                            LEFT JOIN resultados_sprint ON ciclistas.id_ciclista = resultados_sprint.id_ciclista
+                            GROUP BY ciclistas.id_ciclista, ciclistas.nombre, equipos.nombre
+                            ORDER BY puntos_totales DESC
+                            """)) {
+                int position = 1;
                 while (rs.next()) {
-                    sprints.add(new Sprints(rs.getInt("id_sprint"), rs.getInt("id_etapa"), rs.getDouble("km")));
+                    clasificacion.add(new String[] {
+                            String.valueOf(position),
+                            rs.getString("nombre_ciclista"),
+                            rs.getString("nombre_equipo"),
+                            String.valueOf(rs.getInt("puntos_totales"))
+                    });
+                    position++;
                 }
-                return sprints;
+            } catch (SQLException e) {
+                throw new SQLException("Error al obtener clasificación de regularidad: " + e.getMessage());
             }
         } catch (SQLException e) {
-            throw new SQLException("Error al listar sprints: " + e.getMessage());
+            throw new SQLException("Error al obtener clasificación de regularidad: " + e.getMessage());
         }
+        return clasificacion;
     }
 
-    public List<ResultadosPuerto> listarResultadosPuerto() throws SQLException {
+    public List<String[]> clasificacionGeneral() throws SQLException {
+        List<String[]> clasificacion = new ArrayList<>();
         try (Statement stmt = conexion.createStatement()) {
-            try (ResultSet rs = stmt.executeQuery("SELECT * FROM resultados_puerto")) {
-                List<ResultadosPuerto> resultadosPuerto = new ArrayList<>();
+            try (ResultSet rs = stmt.executeQuery(
+                    """
+                            SELECT ciclistas.id_ciclista,
+                                   ciclistas.nombre AS nombre_ciclista,
+                                   equipos.nombre AS nombre_equipo,
+                                   SUM(resultados_etapa.tiempo) AS tiempo_total
+                            FROM resultados_etapa
+                            JOIN ciclistas ON resultados_etapa.id_ciclista = ciclistas.id_ciclista
+                            JOIN equipos ON ciclistas.id_equipo = equipos.id_equipo
+                            GROUP BY ciclistas.id_ciclista, ciclistas.nombre, equipos.nombre
+                            ORDER BY tiempo_total ASC
+                            """)) {
+                int position = 1;
                 while (rs.next()) {
-                    resultadosPuerto.add(new ResultadosPuerto(rs.getInt("id_puerto"), rs.getInt("id_ciclista"),
-                            rs.getInt("posicion"), rs.getInt("puntos")));
+                    clasificacion.add(new String[] {
+                            String.valueOf(position),
+                            rs.getString("nombre_ciclista"),
+                            rs.getString("nombre_equipo"),
+                            rs.getString("tiempo_total")
+                    });
+                    position++;
                 }
-                return resultadosPuerto;
+            } catch (SQLException e) {
+                throw new SQLException("Error al obtener clasificación general: " + e.getMessage());
             }
         } catch (SQLException e) {
-            throw new SQLException("Error al listar resultados de puerto: " + e.getMessage());
+            throw new SQLException("Error al obtener clasificación general: " + e.getMessage());
         }
+        return clasificacion;
     }
 
+    public List<String[]> clasificacionPorEquipos() throws SQLException {
+        List<String[]> clasificacion = new ArrayList<>();
+        try (Statement stmt = conexion.createStatement()) {
+            try (ResultSet rs = stmt.executeQuery(
+                    """
+                            SELECT id_equipo,
+                                   nombre AS nombre_equipo,
+                                   SUM(tiempo_ciclista) AS tiempo_total
+                            FROM (
+                                SELECT equipos.id_equipo,
+                                       equipos.nombre,
+                                       etapas.id_etapa,
+                                       resultados_etapa.tiempo AS tiempo_ciclista,
+                                       ROW_NUMBER() OVER (PARTITION BY equipos.id_equipo, etapas.id_etapa ORDER BY resultados_etapa.tiempo ASC) AS rn
+                                FROM resultados_etapa
+                                JOIN ciclistas ON resultados_etapa.id_ciclista = ciclistas.id_ciclista
+                                JOIN equipos ON ciclistas.id_equipo = equipos.id_equipo
+                                JOIN etapas ON resultados_etapa.id_etapa = etapas.id_etapa
+                            ) AS mejores_ciclistas
+                            WHERE rn <= 3
+                            GROUP BY id_equipo, nombre
+                            ORDER BY tiempo_total ASC
+                            """)) {
+                int position = 1;
+                while (rs.next()) {
+                    clasificacion.add(new String[] {
+                            String.valueOf(position),
+                            rs.getString("nombre_equipo"),
+                            rs.getString("tiempo_total")
+                    });
+                    position++;
+                }
+            } catch (SQLException e) {
+                throw new SQLException("Error al obtener clasificación por equipos: " + e.getMessage());
+            }
+        } catch (SQLException e) {
+            throw new SQLException("Error al obtener clasificación por equipos: " + e.getMessage());
+        }
+        return clasificacion;
+    }
 }

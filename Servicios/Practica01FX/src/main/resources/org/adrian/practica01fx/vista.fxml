@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="408.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.adrian.practica01fx.ConciertoFX">
+   <children>
+      <Label layoutX="47.0" layoutY="42.0" text="Nombre" />
+      <Label layoutX="67.0" layoutY="86.0" text="Aforo" />
+      <Label layoutX="77.0" layoutY="120.0" text="Precio" />
+      <Label layoutX="98.0" layoutY="154.0" text="Fans" />
+      <Label layoutX="98.0" layoutY="184.0" text="Taquillas" />
+      <Button layoutX="82.0" layoutY="211.0" mnemonicParsing="false" onAction="#guardarConcierto" text="Guardar" />
+      <Button layoutX="211.0" layoutY="211.0" mnemonicParsing="false" onAction="#iniciarSimulacion" text="Iniciar simulacion" />
+      <TextField fx:id="txtNombre" layoutX="104.0" layoutY="37.0" />
+      <TextField fx:id="txtAforo" layoutX="137.0" layoutY="79.0" />
+      <TextField fx:id="txtPrecio" layoutX="134.0" layoutY="119.0" />
+      <TextField fx:id="txtFans" layoutX="173.0" layoutY="150.0" />
+      <TextField fx:id="txtTaquillas" layoutX="173.0" layoutY="180.0" />
+      <TextArea fx:id="txtResumen" editable="false" layoutX="56.0" layoutY="249.0" prefHeight="135.0" prefWidth="218.0" />
+      <Label layoutX="44.0" layoutY="-3.0" text="Taquilla consierto FX">
+         <font>
+            <Font size="32.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
