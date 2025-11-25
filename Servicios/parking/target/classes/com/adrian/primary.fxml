@@ -11,7 +11,6 @@
 
 <AnchorPane prefHeight="594.0" prefWidth="830.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.adrian.Controlador">
    <children>
-      <Button fx:id="primaryButton" layoutX="578.0" layoutY="513.0" onAction="#switchToSecondary" text="Switch to Secondary View" />
       <VBox layoutX="9.0" layoutY="7.0" prefHeight="594.0" prefWidth="320.0" spacing="8.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="38.0" prefWidth="302.0" text="Configurar Parking">
@@ -28,6 +27,20 @@
                      </font>
                   </Label>
                   <TextField fx:id="fieldNombre" prefHeight="15.0" prefWidth="137.0" text="Ejemplo">
+                     <font>
+                        <Font name="0xProto Nerd Font" size="16.0" />
+                     </font>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" layoutX="18.0" layoutY="141.0" prefHeight="32.0" prefWidth="200.0">
+               <children>
+                  <Label prefHeight="20.0" prefWidth="120.0" text="Coches">
+                     <font>
+                        <Font name="0xProto Nerd Font" size="16.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="fieldCoches" prefHeight="15.0" prefWidth="137.0" text="1000">
                      <font>
                         <Font name="0xProto Nerd Font" size="16.0" />
                      </font>
@@ -161,5 +174,102 @@
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </opaqueInsets>
       </VBox>
+      <VBox layoutX="721.0" layoutY="14.0" prefHeight="200.0" prefWidth="320.0" spacing="8.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="38.0" prefWidth="302.0" text="Datos">
+               <font>
+                  <Font name="0xProto Nerd Font" size="20.0" />
+               </font>
+            </Label>
+            <Label prefHeight="20.0" prefWidth="320.0" text="Recaudacion">
+               <font>
+                  <Font name="0xProto Nerd Font" size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="labelRecaudacion" prefHeight="30.0" prefWidth="312.0" text="0.00$" textFill="#ababab">
+               <font>
+                  <Font name="0xProto Nerd Font" size="16.0" />
+               </font>
+            </Label>
+            <Label prefHeight="20.0" prefWidth="323.0" text="Plazas libres">
+               <font>
+                  <Font name="0xProto Nerd Font" size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="8.0" />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="labelPlazas" prefHeight="30.0" prefWidth="312.0" text="0/100" textFill="#ababab">
+               <font>
+                  <Font name="0xProto Nerd Font" size="16.0" />
+               </font>
+            </Label>
+            <Label prefHeight="20.0" prefWidth="323.0" text="Plazas electricas libres">
+               <font>
+                  <Font name="0xProto Nerd Font" size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="8.0" />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="labelPlazasElectricas" prefHeight="30.0" prefWidth="312.0" text="0/20" textFill="#ababab">
+               <font>
+                  <Font name="0xProto Nerd Font" size="16.0" />
+               </font>
+            </Label>
+            <Label prefHeight="20.0" prefWidth="321.0" text="Plazas especiales libres">
+               <font>
+                  <Font name="0xProto Nerd Font" size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="8.0" />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="labelPlazasEspeciales" prefHeight="30.0" prefWidth="312.0" text="0/10" textFill="#ababab">
+               <font>
+                  <Font name="0xProto Nerd Font" size="16.0" />
+               </font>
+            </Label>
+            <Label prefHeight="20.0" prefWidth="323.0" text="Coches entrando">
+               <font>
+                  <Font name="0xProto Nerd Font" size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="8.0" />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="labelCochesEntrando" prefHeight="30.0" prefWidth="312.0" text="{}" textFill="#ababab">
+               <font>
+                  <Font name="0xProto Nerd Font" size="16.0" />
+               </font>
+            </Label>
+            <Label prefHeight="20.0" prefWidth="321.0" text="Coches saliendo">
+               <font>
+                  <Font name="0xProto Nerd Font" size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="8.0" />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="labelCochesSaliendo" prefHeight="30.0" prefWidth="312.0" text="{}" textFill="#ababab">
+               <font>
+                  <Font name="0xProto Nerd Font" size="16.0" />
+               </font>
+            </Label>
+            <Button fx:id="primaryButton" onAction="#switchToSecondary" prefHeight="60.0" prefWidth="315.0" text="Iniciar simulacion">
+               <font>
+                  <Font name="0xProto Nerd Font" size="20.0" />
+               </font>
+            </Button>
+         </children>
+         <padding>
+            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+         </padding>
+      </VBox>
+      <Button fx:id="botonVerHistoral" layoutX="326.0" layoutY="482.0" mnemonicParsing="false" onAction="#abrirHistorial" prefHeight="75.0" prefWidth="171.0" text="Ver historial" visible="false" AnchorPane.bottomAnchor="37.0" AnchorPane.leftAnchor="326.0" AnchorPane.rightAnchor="333.0">
+         <font>
+            <Font name="0xProto Nerd Font" size="16.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

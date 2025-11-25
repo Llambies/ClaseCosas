@@ -4,32 +4,40 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
+import javafx.application.Platform;
+
 public class Parking {
 
     final String nombre;
 
-    Semaphore controlAcceso = new Semaphore(1, true);
-    List<Coche> cochesEsperando;
+    public Semaphore escritor = new Semaphore(1, true);
+    public List<String> eventos;
+    public int coches;
+    public int cochesCompletados;
 
-    final int plazas;
-    final int plazasElectricas;
-    final int plazasEspeciales;
-    List<Coche> cochesAparcados;
-    List<Coche> cochesElectricosAparcados;
-    List<Coche> cochesEspecialesAparcados;
+    public int totalPlazas;
+    public Semaphore plazas;
+    public int totalPlazasElectricas;
+    public Semaphore plazasElectricas;
+    public int totalPlazasEspeciales;
+    public Semaphore plazasEspeciales;
 
     final double precio;
     final double precioElectrico;
     final double precioEspecial;
     double recaudacion;
-    Semaphore recaudador = new Semaphore(1, true);
+    public Semaphore recaudador = new Semaphore(1, true);
+    public EscuchadorParkings escuchador;
 
     final int accesos;
-    Semaphore entradas;
-    Semaphore salidas;
+    public List<Coche> cochesEntrando;
+    public Semaphore entradas;
+    public List<Coche> cochesSaliendo;
+    public Semaphore salidas;
 
     public Parking(
             String nombre,
+            int coches,
             int plazas,
             int plazasElectricas,
             int plazasEspeciales,
@@ -40,12 +48,17 @@ public class Parking {
 
         this.nombre = nombre;
 
-        this.plazas = plazas;
-        cochesAparcados = new ArrayList<Coche>();
-        this.plazasElectricas = plazasElectricas;
-        cochesElectricosAparcados = new ArrayList<Coche>();
-        this.plazasEspeciales = plazasEspeciales;
-        cochesEspecialesAparcados = new ArrayList<Coche>();
+        eventos = new ArrayList<>();
+
+        this.coches = coches;
+        this.cochesCompletados = 0;
+
+        totalPlazas = plazas;
+        this.plazas = new Semaphore(plazas);
+        totalPlazasElectricas = plazasElectricas;
+        this.plazasElectricas = new Semaphore(plazasElectricas);
+        totalPlazasEspeciales = plazasEspeciales;
+        this.plazasEspeciales = new Semaphore(plazasEspeciales);
 
         this.precio = precio;
         this.precioElectrico = precioElectrico;
@@ -53,32 +66,27 @@ public class Parking {
 
         this.accesos = accesos;
         entradas = new Semaphore(accesos, true);
+        cochesEntrando = new ArrayList<>();
         salidas = new Semaphore(accesos, true);
-
+        cochesSaliendo = new ArrayList<>();
     }
 
-    public boolean haySitio(Coche c) {
+    public void pagar(Coche c, long tiempo) {
         if (c.esEspecial) {
-            if (cochesEspecialesAparcados.size() < plazasEspeciales) {
-                return true;
-            }
+            recaudacion += precioEspecial * tiempo / 10000;
+        } else if (c.esElectrico) {
+            recaudacion += precioElectrico * tiempo / 10000;
+        } else {
+            recaudacion += precio * tiempo / 10000;
         }
-        if (c.esElectrico) {
-            if (cochesElectricosAparcados.size() < plazasElectricas) {
-                return true;
+        System.out.println(recaudacion + "$");
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                escuchador.cambioRecaudacion(recaudacion);
             }
-        }
-        return cochesAparcados.size() < plazas;
-    }
+        });
 
-    public void aparcar(Coche c) {
-        if (c.esEspecial) {
-            cochesEspecialesAparcados.add(c);
-        }
-        if (c.esElectrico) {
-            cochesElectricosAparcados.add(c);
-        }
-        cochesAparcados.add(c);
     }
 
     @Override
