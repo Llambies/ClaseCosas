@@ -45,6 +45,44 @@ public class Parking {
         this.controlSalidas = new Semaphore(numSalidas);
     }
 
+    /**
+     * Inicia la simulación creando el número indicado de coches y manteniendo
+     * la simulación activa durante el tiempo especificado.
+     *
+     * @param numCoches    número total de coches que participarán en la simulación
+     * @param tiempoSegundos duración aproximada de la simulación en segundos
+     */
+    public void iniciarSimulacion(int numCoches, int tiempoSegundos) {
+        simulacionActiva = true;
+
+        Thread simulacionThread = new Thread(() -> {
+            Thread[] hilosCoches = new Thread[numCoches];
+
+            for (int i = 0; i < numCoches; i++) {
+                Coche coche = new Coche(this);
+                Thread hilo = new Thread(coche, "Coche-" + coche.getId());
+                hilosCoches[i] = hilo;
+                hilo.start();
+            }
+
+            try {
+                // La simulación se mantiene activa durante el tiempo indicado
+                Thread.sleep(Math.max(0, tiempoSegundos) * 1000L);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            } finally {
+                simulacionActiva = false;
+            }
+        }, "Simulacion-Parking");
+
+        simulacionThread.setDaemon(true);
+        simulacionThread.start();
+    }
+
+    public boolean isSimulacionActiva() {
+        return simulacionActiva;
+    }
+
     public boolean intentarEntrada(Coche coche) {
         try {
             controlEntradas.acquire();
