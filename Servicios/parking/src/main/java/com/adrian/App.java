@@ -7,8 +7,11 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.adrian.model.Coche;
+import com.adrian.model.EscuchadorParkings;
 import com.adrian.model.Parking;
 
 /**
@@ -17,7 +20,7 @@ import com.adrian.model.Parking;
 public class App extends Application {
 
     private static Scene scene;
-    private static Parking parking;
+    public static Parking parking;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -44,12 +47,13 @@ public class App extends Application {
         parking = p;
     }
 
-    static void iniciarSimulacion() throws Exception {
+    static void iniciarSimulacion(EscuchadorParkings e) throws Exception {
         if (parking == null) {
             throw new Exception("Parking no configurado");
         }
-
-        for (int i = 0; i < 1000; i++) {
+        
+        parking.escuchador = e;
+        for (int i = 0; i < parking.coches; i++) {
             Coche c = new Coche(parking, (Math.random() < 0.1), (Math.random() < 0.1));
             Thread hilo = new Thread(c);
             hilo.start();
