@@ -82,7 +82,7 @@ public class Coche implements Runnable {
             parking.eventos.add(this.id + " aparco");
             parking.escritor.release();
 
-            long tiempoEnElParking = Math.round(Math.random() * 100000);
+            long tiempoEnElParking = Math.round(Math.random() * 1000);
             Thread.sleep(tiempoEnElParking);
 
             parking.salidas.acquire();

@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  my-mongo-db:
+    container_name: my-mongo-db
+    image: mongo:4.4.3
+    ports:
+      - "27017:27017"
+    volumes:
+      - misdatosmongo:/data/db
+volumes:
+  misdatosmongo:

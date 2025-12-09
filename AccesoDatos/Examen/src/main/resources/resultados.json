@@ -1,0 +1,1043 @@
+[
+  {
+    "id": 1,
+    "numero_jornada": 1,
+    "id_equipo_local": 1,
+    "id_equipo_visitante": 20,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 2,
+    "numero_jornada": 1,
+    "id_equipo_local": 2,
+    "id_equipo_visitante": 19,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 3,
+    "numero_jornada": 1,
+    "id_equipo_local": 3,
+    "id_equipo_visitante": 18,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 4,
+    "numero_jornada": 1,
+    "id_equipo_local": 4,
+    "id_equipo_visitante": 17,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 2
+  },
+  {
+    "id": 5,
+    "numero_jornada": 1,
+    "id_equipo_local": 5,
+    "id_equipo_visitante": 16,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 6,
+    "numero_jornada": 1,
+    "id_equipo_local": 6,
+    "id_equipo_visitante": 15,
+    "goles_equipo_local": 2,
+    "goles_equipo_visitante": 2
+  },
+  {
+    "id": 7,
+    "numero_jornada": 1,
+    "id_equipo_local": 7,
+    "id_equipo_visitante": 14,
+    "goles_equipo_local": 3,
+    "goles_equipo_visitante": 2
+  },
+  {
+    "id": 8,
+    "numero_jornada": 1,
+    "id_equipo_local": 8,
+    "id_equipo_visitante": 13,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 9,
+    "numero_jornada": 1,
+    "id_equipo_local": 9,
+    "id_equipo_visitante": 12,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 2
+  },
+  {
+    "id": 10,
+    "numero_jornada": 1,
+    "id_equipo_local": 10,
+    "id_equipo_visitante": 11,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 2
+  },
+  {
+    "id": 11,
+    "numero_jornada": 2,
+    "id_equipo_local": 1,
+    "id_equipo_visitante": 19,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 0
+  },
+  {
+    "id": 12,
+    "numero_jornada": 2,
+    "id_equipo_local": 20,
+    "id_equipo_visitante": 18,
+    "goles_equipo_local": 3,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 13,
+    "numero_jornada": 2,
+    "id_equipo_local": 2,
+    "id_equipo_visitante": 17,
+    "goles_equipo_local": 2,
+    "goles_equipo_visitante": 0
+  },
+  {
+    "id": 14,
+    "numero_jornada": 2,
+    "id_equipo_local": 3,
+    "id_equipo_visitante": 16,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 15,
+    "numero_jornada": 2,
+    "id_equipo_local": 4,
+    "id_equipo_visitante": 15,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 0
+  },
+  {
+    "id": 16,
+    "numero_jornada": 2,
+    "id_equipo_local": 5,
+    "id_equipo_visitante": 14,
+    "goles_equipo_local": 2,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 17,
+    "numero_jornada": 2,
+    "id_equipo_local": 6,
+    "id_equipo_visitante": 13,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 0
+  },
+  {
+    "id": 18,
+    "numero_jornada": 2,
+    "id_equipo_local": 7,
+    "id_equipo_visitante": 12,
+    "goles_equipo_local": 2,
+    "goles_equipo_visitante": 2
+  },
+  {
+    "id": 19,
+    "numero_jornada": 2,
+    "id_equipo_local": 8,
+    "id_equipo_visitante": 11,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 20,
+    "numero_jornada": 2,
+    "id_equipo_local": 9,
+    "id_equipo_visitante": 10,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 0
+  },
+  {
+    "id": 21,
+    "numero_jornada": 3,
+    "id_equipo_local": 1,
+    "id_equipo_visitante": 18,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 22,
+    "numero_jornada": 3,
+    "id_equipo_local": 19,
+    "id_equipo_visitante": 17,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 2
+  },
+  {
+    "id": 23,
+    "numero_jornada": 3,
+    "id_equipo_local": 20,
+    "id_equipo_visitante": 16,
+    "goles_equipo_local": 2,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 24,
+    "numero_jornada": 3,
+    "id_equipo_local": 2,
+    "id_equipo_visitante": 15,
+    "goles_equipo_local": 2,
+    "goles_equipo_visitante": 2
+  },
+  {
+    "id": 25,
+    "numero_jornada": 3,
+    "id_equipo_local": 3,
+    "id_equipo_visitante": 14,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 26,
+    "numero_jornada": 3,
+    "id_equipo_local": 4,
+    "id_equipo_visitante": 13,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 0
+  },
+  {
+    "id": 27,
+    "numero_jornada": 3,
+    "id_equipo_local": 5,
+    "id_equipo_visitante": 12,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 2
+  },
+  {
+    "id": 28,
+    "numero_jornada": 3,
+    "id_equipo_local": 6,
+    "id_equipo_visitante": 11,
+    "goles_equipo_local": 2,
+    "goles_equipo_visitante": 0
+  },
+  {
+    "id": 29,
+    "numero_jornada": 3,
+    "id_equipo_local": 7,
+    "id_equipo_visitante": 10,
+    "goles_equipo_local": 3,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 30,
+    "numero_jornada": 3,
+    "id_equipo_local": 8,
+    "id_equipo_visitante": 9,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 0
+  },
+  {
+    "id": 31,
+    "numero_jornada": 4,
+    "id_equipo_local": 1,
+    "id_equipo_visitante": 17,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 0
+  },
+  {
+    "id": 32,
+    "numero_jornada": 4,
+    "id_equipo_local": 18,
+    "id_equipo_visitante": 16,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 33,
+    "numero_jornada": 4,
+    "id_equipo_local": 19,
+    "id_equipo_visitante": 15,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 2
+  },
+  {
+    "id": 34,
+    "numero_jornada": 4,
+    "id_equipo_local": 20,
+    "id_equipo_visitante": 14,
+    "goles_equipo_local": 3,
+    "goles_equipo_visitante": 2
+  },
+  {
+    "id": 35,
+    "numero_jornada": 4,
+    "id_equipo_local": 2,
+    "id_equipo_visitante": 13,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 0
+  },
+  {
+    "id": 36,
+    "numero_jornada": 4,
+    "id_equipo_local": 3,
+    "id_equipo_visitante": 12,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 37,
+    "numero_jornada": 4,
+    "id_equipo_local": 4,
+    "id_equipo_visitante": 11,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 38,
+    "numero_jornada": 4,
+    "id_equipo_local": 5,
+    "id_equipo_visitante": 10,
+    "goles_equipo_local": 2,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 39,
+    "numero_jornada": 4,
+    "id_equipo_local": 6,
+    "id_equipo_visitante": 9,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 2
+  },
+  {
+    "id": 40,
+    "numero_jornada": 4,
+    "id_equipo_local": 7,
+    "id_equipo_visitante": 8,
+    "goles_equipo_local": 2,
+    "goles_equipo_visitante": 0
+  },
+  {
+    "id": 41,
+    "numero_jornada": 5,
+    "id_equipo_local": 1,
+    "id_equipo_visitante": 16,
+    "goles_equipo_local": 2,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 42,
+    "numero_jornada": 5,
+    "id_equipo_local": 17,
+    "id_equipo_visitante": 15,
+    "goles_equipo_local": 2,
+    "goles_equipo_visitante": 3
+  },
+  {
+    "id": 43,
+    "numero_jornada": 5,
+    "id_equipo_local": 18,
+    "id_equipo_visitante": 14,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 44,
+    "numero_jornada": 5,
+    "id_equipo_local": 19,
+    "id_equipo_visitante": 13,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 45,
+    "numero_jornada": 5,
+    "id_equipo_local": 20,
+    "id_equipo_visitante": 12,
+    "goles_equipo_local": 3,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 46,
+    "numero_jornada": 5,
+    "id_equipo_local": 2,
+    "id_equipo_visitante": 11,
+    "goles_equipo_local": 2,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 47,
+    "numero_jornada": 5,
+    "id_equipo_local": 3,
+    "id_equipo_visitante": 10,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 0
+  },
+  {
+    "id": 48,
+    "numero_jornada": 5,
+    "id_equipo_local": 4,
+    "id_equipo_visitante": 9,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 2
+  },
+  {
+    "id": 49,
+    "numero_jornada": 5,
+    "id_equipo_local": 5,
+    "id_equipo_visitante": 8,
+    "goles_equipo_local": 2,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 50,
+    "numero_jornada": 5,
+    "id_equipo_local": 6,
+    "id_equipo_visitante": 7,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 3
+  },
+  {
+    "id": 51,
+    "numero_jornada": 6,
+    "id_equipo_local": 1,
+    "id_equipo_visitante": 15,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 2
+  },
+  {
+    "id": 52,
+    "numero_jornada": 6,
+    "id_equipo_local": 16,
+    "id_equipo_visitante": 14,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 53,
+    "numero_jornada": 6,
+    "id_equipo_local": 17,
+    "id_equipo_visitante": 13,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 54,
+    "numero_jornada": 6,
+    "id_equipo_local": 18,
+    "id_equipo_visitante": 12,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 55,
+    "numero_jornada": 6,
+    "id_equipo_local": 19,
+    "id_equipo_visitante": 11,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 2
+  },
+  {
+    "id": 56,
+    "numero_jornada": 6,
+    "id_equipo_local": 20,
+    "id_equipo_visitante": 10,
+    "goles_equipo_local": 2,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 57,
+    "numero_jornada": 6,
+    "id_equipo_local": 2,
+    "id_equipo_visitante": 9,
+    "goles_equipo_local": 2,
+    "goles_equipo_visitante": 2
+  },
+  {
+    "id": 58,
+    "numero_jornada": 6,
+    "id_equipo_local": 3,
+    "id_equipo_visitante": 8,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 0
+  },
+  {
+    "id": 59,
+    "numero_jornada": 6,
+    "id_equipo_local": 4,
+    "id_equipo_visitante": 7,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 2
+  },
+  {
+    "id": 60,
+    "numero_jornada": 6,
+    "id_equipo_local": 5,
+    "id_equipo_visitante": 6,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 61,
+    "numero_jornada": 7,
+    "id_equipo_local": 1,
+    "id_equipo_visitante": 14,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 62,
+    "numero_jornada": 7,
+    "id_equipo_local": 15,
+    "id_equipo_visitante": 13,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 63,
+    "numero_jornada": 7,
+    "id_equipo_local": 16,
+    "id_equipo_visitante": 12,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 0
+  },
+  {
+    "id": 64,
+    "numero_jornada": 7,
+    "id_equipo_local": 17,
+    "id_equipo_visitante": 11,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 2
+  },
+  {
+    "id": 65,
+    "numero_jornada": 7,
+    "id_equipo_local": 18,
+    "id_equipo_visitante": 10,
+    "goles_equipo_local": 2,
+    "goles_equipo_visitante": 0
+  },
+  {
+    "id": 66,
+    "numero_jornada": 7,
+    "id_equipo_local": 19,
+    "id_equipo_visitante": 9,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 0
+  },
+  {
+    "id": 67,
+    "numero_jornada": 7,
+    "id_equipo_local": 20,
+    "id_equipo_visitante": 8,
+    "goles_equipo_local": 2,
+    "goles_equipo_visitante": 2
+  },
+  {
+    "id": 68,
+    "numero_jornada": 7,
+    "id_equipo_local": 2,
+    "id_equipo_visitante": 7,
+    "goles_equipo_local": 2,
+    "goles_equipo_visitante": 3
+  },
+  {
+    "id": 69,
+    "numero_jornada": 7,
+    "id_equipo_local": 3,
+    "id_equipo_visitante": 6,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 0
+  },
+  {
+    "id": 70,
+    "numero_jornada": 7,
+    "id_equipo_local": 4,
+    "id_equipo_visitante": 5,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 71,
+    "numero_jornada": 8,
+    "id_equipo_local": 1,
+    "id_equipo_visitante": 13,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 0
+  },
+  {
+    "id": 72,
+    "numero_jornada": 8,
+    "id_equipo_local": 14,
+    "id_equipo_visitante": 12,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 73,
+    "numero_jornada": 8,
+    "id_equipo_local": 15,
+    "id_equipo_visitante": 11,
+    "goles_equipo_local": 2,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 74,
+    "numero_jornada": 8,
+    "id_equipo_local": 16,
+    "id_equipo_visitante": 10,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 0
+  },
+  {
+    "id": 75,
+    "numero_jornada": 8,
+    "id_equipo_local": 17,
+    "id_equipo_visitante": 9,
+    "goles_equipo_local": 2,
+    "goles_equipo_visitante": 2
+  },
+  {
+    "id": 76,
+    "numero_jornada": 8,
+    "id_equipo_local": 18,
+    "id_equipo_visitante": 8,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 0
+  },
+  {
+    "id": 77,
+    "numero_jornada": 8,
+    "id_equipo_local": 19,
+    "id_equipo_visitante": 7,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 78,
+    "numero_jornada": 8,
+    "id_equipo_local": 20,
+    "id_equipo_visitante": 6,
+    "goles_equipo_local": 2,
+    "goles_equipo_visitante": 0
+  },
+  {
+    "id": 79,
+    "numero_jornada": 8,
+    "id_equipo_local": 2,
+    "id_equipo_visitante": 5,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 80,
+    "numero_jornada": 8,
+    "id_equipo_local": 3,
+    "id_equipo_visitante": 4,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 2
+  },
+  {
+    "id": 81,
+    "numero_jornada": 9,
+    "id_equipo_local": 1,
+    "id_equipo_visitante": 12,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 82,
+    "numero_jornada": 9,
+    "id_equipo_local": 13,
+    "id_equipo_visitante": 11,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 83,
+    "numero_jornada": 9,
+    "id_equipo_local": 14,
+    "id_equipo_visitante": 10,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 2
+  },
+  {
+    "id": 84,
+    "numero_jornada": 9,
+    "id_equipo_local": 15,
+    "id_equipo_visitante": 9,
+    "goles_equipo_local": 2,
+    "goles_equipo_visitante": 2
+  },
+  {
+    "id": 85,
+    "numero_jornada": 9,
+    "id_equipo_local": 16,
+    "id_equipo_visitante": 8,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 2
+  },
+  {
+    "id": 86,
+    "numero_jornada": 9,
+    "id_equipo_local": 17,
+    "id_equipo_visitante": 7,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 2
+  },
+  {
+    "id": 87,
+    "numero_jornada": 9,
+    "id_equipo_local": 18,
+    "id_equipo_visitante": 6,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 88,
+    "numero_jornada": 9,
+    "id_equipo_local": 19,
+    "id_equipo_visitante": 5,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 89,
+    "numero_jornada": 9,
+    "id_equipo_local": 20,
+    "id_equipo_visitante": 4,
+    "goles_equipo_local": 2,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 90,
+    "numero_jornada": 9,
+    "id_equipo_local": 2,
+    "id_equipo_visitante": 3,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 91,
+    "numero_jornada": 10,
+    "id_equipo_local": 1,
+    "id_equipo_visitante": 11,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 0
+  },
+  {
+    "id": 92,
+    "numero_jornada": 10,
+    "id_equipo_local": 12,
+    "id_equipo_visitante": 10,
+    "goles_equipo_local": 2,
+    "goles_equipo_visitante": 2
+  },
+  {
+    "id": 93,
+    "numero_jornada": 10,
+    "id_equipo_local": 13,
+    "id_equipo_visitante": 9,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 94,
+    "numero_jornada": 10,
+    "id_equipo_local": 14,
+    "id_equipo_visitante": 8,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 2
+  },
+  {
+    "id": 95,
+    "numero_jornada": 10,
+    "id_equipo_local": 15,
+    "id_equipo_visitante": 7,
+    "goles_equipo_local": 3,
+    "goles_equipo_visitante": 2
+  },
+  {
+    "id": 96,
+    "numero_jornada": 10,
+    "id_equipo_local": 16,
+    "id_equipo_visitante": 6,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 0
+  },
+  {
+    "id": 97,
+    "numero_jornada": 10,
+    "id_equipo_local": 17,
+    "id_equipo_visitante": 5,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 2
+  },
+  {
+    "id": 98,
+    "numero_jornada": 10,
+    "id_equipo_local": 18,
+    "id_equipo_visitante": 4,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 99,
+    "numero_jornada": 10,
+    "id_equipo_local": 19,
+    "id_equipo_visitante": 3,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 2
+  },
+  {
+    "id": 100,
+    "numero_jornada": 10,
+    "id_equipo_local": 20,
+    "id_equipo_visitante": 2,
+    "goles_equipo_local": 2,
+    "goles_equipo_visitante": 2
+  },
+  {
+    "id": 101,
+    "numero_jornada": 11,
+    "id_equipo_local": 1,
+    "id_equipo_visitante": 10,
+    "goles_equipo_local": 2,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 102,
+    "numero_jornada": 11,
+    "id_equipo_local": 11,
+    "id_equipo_visitante": 9,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 0
+  },
+  {
+    "id": 103,
+    "numero_jornada": 11,
+    "id_equipo_local": 12,
+    "id_equipo_visitante": 8,
+    "goles_equipo_local": 2,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 104,
+    "numero_jornada": 11,
+    "id_equipo_local": 13,
+    "id_equipo_visitante": 7,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 3
+  },
+  {
+    "id": 105,
+    "numero_jornada": 11,
+    "id_equipo_local": 14,
+    "id_equipo_visitante": 6,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 106,
+    "numero_jornada": 11,
+    "id_equipo_local": 15,
+    "id_equipo_visitante": 5,
+    "goles_equipo_local": 2,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 107,
+    "numero_jornada": 11,
+    "id_equipo_local": 16,
+    "id_equipo_visitante": 4,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 0
+  },
+  {
+    "id": 108,
+    "numero_jornada": 11,
+    "id_equipo_local": 17,
+    "id_equipo_visitante": 3,
+    "goles_equipo_local": 2,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 109,
+    "numero_jornada": 11,
+    "id_equipo_local": 18,
+    "id_equipo_visitante": 2,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 2
+  },
+  {
+    "id": 110,
+    "numero_jornada": 11,
+    "id_equipo_local": 19,
+    "id_equipo_visitante": 20,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 3
+  },
+  {
+    "id": 111,
+    "numero_jornada": 12,
+    "id_equipo_local": 1,
+    "id_equipo_visitante": 9,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 112,
+    "numero_jornada": 12,
+    "id_equipo_local": 10,
+    "id_equipo_visitante": 8,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 113,
+    "numero_jornada": 12,
+    "id_equipo_local": 11,
+    "id_equipo_visitante": 7,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 3
+  },
+  {
+    "id": 114,
+    "numero_jornada": 12,
+    "id_equipo_local": 12,
+    "id_equipo_visitante": 6,
+    "goles_equipo_local": 2,
+    "goles_equipo_visitante": 0
+  },
+  {
+    "id": 115,
+    "numero_jornada": 12,
+    "id_equipo_local": 13,
+    "id_equipo_visitante": 5,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 116,
+    "numero_jornada": 12,
+    "id_equipo_local": 14,
+    "id_equipo_visitante": 4,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 0
+  },
+  {
+    "id": 117,
+    "numero_jornada": 12,
+    "id_equipo_local": 15,
+    "id_equipo_visitante": 3,
+    "goles_equipo_local": 2,
+    "goles_equipo_visitante": 0
+  },
+  {
+    "id": 118,
+    "numero_jornada": 12,
+    "id_equipo_local": 16,
+    "id_equipo_visitante": 2,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 2
+  },
+  {
+    "id": 119,
+    "numero_jornada": 12,
+    "id_equipo_local": 17,
+    "id_equipo_visitante": 20,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 3
+  },
+  {
+    "id": 120,
+    "numero_jornada": 12,
+    "id_equipo_local": 18,
+    "id_equipo_visitante": 19,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 0
+  },
+  {
+    "id": 121,
+    "numero_jornada": 13,
+    "id_equipo_local": 1,
+    "id_equipo_visitante": 8,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 122,
+    "numero_jornada": 13,
+    "id_equipo_local": 9,
+    "id_equipo_visitante": 7,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 3
+  },
+  {
+    "id": 123,
+    "numero_jornada": 13,
+    "id_equipo_local": 10,
+    "id_equipo_visitante": 6,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 0
+  },
+  {
+    "id": 124,
+    "numero_jornada": 13,
+    "id_equipo_local": 11,
+    "id_equipo_visitante": 5,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 2
+  },
+  {
+    "id": 125,
+    "numero_jornada": 13,
+    "id_equipo_local": 12,
+    "id_equipo_visitante": 4,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 126,
+    "numero_jornada": 13,
+    "id_equipo_local": 13,
+    "id_equipo_visitante": 3,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 0
+  },
+  {
+    "id": 127,
+    "numero_jornada": 13,
+    "id_equipo_local": 14,
+    "id_equipo_visitante": 2,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 2
+  },
+  {
+    "id": 128,
+    "numero_jornada": 13,
+    "id_equipo_local": 15,
+    "id_equipo_visitante": 20,
+    "goles_equipo_local": 3,
+    "goles_equipo_visitante": 3
+  },
+  {
+    "id": 129,
+    "numero_jornada": 13,
+    "id_equipo_local": 16,
+    "id_equipo_visitante": 19,
+    "goles_equipo_local": 1,
+    "goles_equipo_visitante": 1
+  },
+  {
+    "id": 130,
+    "numero_jornada": 13,
+    "id_equipo_local": 17,
+    "id_equipo_visitante": 18,
+    "goles_equipo_local": 0,
+    "goles_equipo_visitante": 3
+  }
+]
+
