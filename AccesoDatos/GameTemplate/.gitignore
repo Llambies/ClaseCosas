@@ -3,21 +3,20 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+.kotlin
 
 ### IntelliJ IDEA ###
-.idea
+.idea/modules.xml
+.idea/jarRepositories.xml
+.idea/compiler.xml
+.idea/libraries/
 *.iws
 *.iml
 *.ipr
-*.zip
-*.wt
-*.lock
-*.turtle
-*.bson
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-package-lock.json
+
 ### Eclipse ###
 .apt_generated
 .classpath
@@ -39,12 +38,6 @@ bin/
 
 ### VS Code ###
 .vscode/
-.cursor/
-
 
 ### Mac OS ###
 .DS_Store
-
-node_modules/
-.gitignore
-AccesoDatos/MongoDB/data/WiredTiger

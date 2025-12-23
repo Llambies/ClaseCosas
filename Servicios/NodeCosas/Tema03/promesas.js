@@ -85,3 +85,38 @@ buscarProducto("Mouse")
   .catch((mensaje) => {
     console.log(mensaje);
   });
+
+
+// Ejercicio 4
+
+function sumar(x) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(x + 10);
+    }, 1000);
+  })
+}
+
+function multiplicar(x) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(x * 3);
+    }, 1000);
+  })
+}
+
+function restar(x) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(x - 5);
+    }, 1000);
+  })
+}
+
+sumar(5).then((resultado) => {
+  multiplicar(resultado).then((resultado2) => {
+    restar(resultado2).then((resultado3) => {
+      console.log(resultado3);
+    })
+  })
+})
