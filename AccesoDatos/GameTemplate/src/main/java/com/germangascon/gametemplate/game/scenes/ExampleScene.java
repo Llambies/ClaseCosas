@@ -5,6 +5,8 @@ import com.germangascon.gametemplate.core.GameScene;
 import com.germangascon.gametemplate.entities.Entity;
 import com.germangascon.gametemplate.game.EntityFactory;
 import com.germangascon.gametemplate.game.entities.Tank;
+import com.germangascon.gametemplate.game.entities.Tower;
+import com.germangascon.gametemplate.game.TowerType;
 import com.germangascon.gametemplate.math.Vector2;
 import com.germangascon.gametemplate.game.Economy;
 import com.germangascon.gametemplate.math.GridPos;
@@ -45,6 +47,7 @@ public class ExampleScene extends GameScene {
     private Level currentLevel;
     private HashMap<GridPos, String> levelTiles;
     private List<GridPos> levelWaypoints;
+    private TowerType selectedTowerType = TowerType.BASIC;
 
     // Modificar el constructor
     public ExampleScene() {
@@ -103,11 +106,24 @@ public class ExampleScene extends GameScene {
                     Config.TILE_SIZE / 4,
                     sprites);
 
-            // Configurar el cursor después de cargar los assets
-            setupCustomCursor();
         } catch (IOException e) {
             throw new RuntimeException("Error cargando assets", e);
         }
+    }
+
+    @Override
+    protected void init(com.germangascon.gametemplate.core.Engine engine) {
+        super.init(engine);
+        // Configurar el cursor después de que el engine esté inicializado
+        // Usar un pequeño delay para asegurar que el engine esté completamente inicializado
+        new Thread(() -> {
+            try {
+                Thread.sleep(100); // Pequeño delay para asegurar inicialización
+                setupCustomCursor();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }).start();
     }
 
     private void setupCustomCursor() {
@@ -152,21 +168,46 @@ public class ExampleScene extends GameScene {
                 entityFactory.spawnBullet(entity, entity.getX(), entity.getY(), new Vector2(mouseX, mouseY), 1);
             }
 
-            System.out.println("Dinero: " + economy.getDinero());
-            if (economy.tengoSuficienteDinero(10)) {
+            // Verificar si hay una torreta en la posición clicada
+            Tower clickedTower = findTowerAtPosition(mouseX, mouseY);
+            if (clickedTower != null) {
+                // Si hay una torreta, intentar mejorarla
+                int upgradeCost = clickedTower.getTowerType().getUpgradeCost(clickedTower.getLevel());
+                if (economy.tengoSuficienteDinero(upgradeCost)) {
+                    clickedTower.upgrade();
+                    economy.gastarDinero(upgradeCost);
+                    System.out.println("Torreta mejorada a nivel " + clickedTower.getLevel());
+                } else {
+                    System.out.println("No tienes suficiente dinero para mejorar. Costo: " + upgradeCost);
+                }
+                return;
+            }
 
+            // Si no hay torreta, intentar colocar una nueva
+            int towerCost = selectedTowerType.getCost();
+            if (economy.tengoSuficienteDinero(towerCost)) {
                 Vector2 position = new Vector2(mouseX, mouseY);
                 GridPos gridPos = new GridPos(position);
+                
+                // Verificar que no haya otra torreta en esa posición
+                if (findTowerAtPosition(mouseX, mouseY) != null) {
+                    System.out.println("Ya hay una torreta en esa posición");
+                    return;
+                }
+                
                 if (levelTiles.containsKey(gridPos)) {
                     String tile = levelTiles.get(gridPos);
                     if (tile.equals("/tilesheet/path")) {
-                        System.out.println("Hay un tile en la posición clicada");
+                        System.out.println("No se puede colocar una torreta en el camino");
                         return;
                     }
                 }
 
-                entityFactory.spawnTower(gridPos.getCentro().x, gridPos.getCentro().y, 1);
-                economy.gastarDinero(10);
+                entityFactory.spawnTower(gridPos.getCentro().x, gridPos.getCentro().y, selectedTowerType, 1);
+                economy.gastarDinero(towerCost);
+                System.out.println("Torreta " + selectedTowerType.getName() + " colocada. Costo: " + towerCost);
+            } else {
+                System.out.println("No tienes suficiente dinero. Costo: " + towerCost);
             }
         }
 
@@ -183,6 +224,17 @@ public class ExampleScene extends GameScene {
             if (Config.SHOW_DEBUG) {
                 addDebugInfo("RightClick", "(" + mouseX + ", " + mouseY + ")");
             }
+            
+            // Derribar torreta si hay una en la posición clicada
+            Tower clickedTower = findTowerAtPosition(mouseX, mouseY);
+            if (clickedTower != null) {
+                int refund = TowerType.getRefundAmount(clickedTower.getInitialCost());
+                economy.ganarDinero(refund);
+                clickedTower.destroy();
+                System.out.println("Torreta derribada. Reembolso: " + refund);
+                return;
+            }
+            
             // Ejemplo: mover la primera entidad dinámica al punto clicado
             if (!entities.isEmpty() && entities.getFirst() instanceof Tank entity) {
                 entity.getPosition().set(mouseX, mouseY);
@@ -214,6 +266,40 @@ public class ExampleScene extends GameScene {
         if (inputManager.isKeyJustPressed(KeyEvent.VK_P)) {
             pause();
         }
+
+        // Selección de tipo de torreta con teclas 1, 2, 3
+        if (inputManager.isKeyJustPressed(KeyEvent.VK_1)) {
+            selectedTowerType = TowerType.BASIC;
+            System.out.println("Torreta seleccionada: " + selectedTowerType.getName() + " (Costo: " + selectedTowerType.getCost() + ")");
+        }
+        if (inputManager.isKeyJustPressed(KeyEvent.VK_2)) {
+            selectedTowerType = TowerType.RAPID;
+            System.out.println("Torreta seleccionada: " + selectedTowerType.getName() + " (Costo: " + selectedTowerType.getCost() + ")");
+        }
+        if (inputManager.isKeyJustPressed(KeyEvent.VK_3)) {
+            selectedTowerType = TowerType.HEAVY;
+            System.out.println("Torreta seleccionada: " + selectedTowerType.getName() + " (Costo: " + selectedTowerType.getCost() + ")");
+        }
+    }
+
+    /**
+     * Encuentra una torreta en la posición especificada
+     * @param x Coordenada X
+     * @param y Coordenada Y
+     * @return La torreta encontrada o null si no hay ninguna
+     */
+    private Tower findTowerAtPosition(int x, int y) {
+        Vector2 clickPos = new Vector2(x, y);
+        for (Entity entity : getEntities()) {
+            if (entity instanceof Tower tower) {
+                float distance = tower.getPosition().distance(clickPos);
+                // Considerar que el clic está dentro si está dentro del área de la torreta
+                if (distance < tower.getWidth() / 2f) {
+                    return tower;
+                }
+            }
+        }
+        return null;
     }
 
     /**
@@ -272,6 +358,14 @@ public class ExampleScene extends GameScene {
         g.setColor(Color.WHITE);
         g.setFont(new Font("Rubik", Font.BOLD, 24));
         g.drawString("Money: " + economy.getDinero(), 10, 50);
+        
+        // Mostrar tipo de torreta seleccionada
+        g.setFont(new Font("Rubik", Font.BOLD, 18));
+        g.drawString("Torreta: " + selectedTowerType.getName() + " (Costo: " + selectedTowerType.getCost() + ")", 10, 80);
+        
+        // Mostrar controles
+        g.setFont(new Font("Rubik", Font.PLAIN, 14));
+        g.drawString("1-3: Seleccionar torreta | Click Izq: Colocar/Mejorar | Click Der: Derribar", 10, engine.getHeight() - 20);
 
         // Entidades
         for (Entity entity : getEntities()) {

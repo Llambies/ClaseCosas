@@ -2,6 +2,7 @@ package com.germangascon.gametemplate.game.entities;
 
 import com.germangascon.gametemplate.core.Timer;
 import com.germangascon.gametemplate.entities.Entity;
+import com.germangascon.gametemplate.game.TowerType;
 import com.germangascon.gametemplate.math.Vector2;
 
 import java.util.Optional;
@@ -20,12 +21,73 @@ public class Tower extends Entity {
     private float cooldown;
     private float range;
     private final Timer timer;
+    private final TowerType towerType;
+    private int level;
+    private final int initialCost;
 
+    public Tower(float x, float y, TowerType towerType, int level) {
+        super(x, y, 64, 64, 35, 65, 
+              calculateHp(towerType, level), 
+              calculateDamage(towerType, level), 
+              towerType.getSpritePath());
+        this.towerType = towerType;
+        this.level = level;
+        this.initialCost = towerType.getCost();
+        this.range = calculateRange(towerType, level);
+        this.cooldown = calculateCooldown(towerType, level);
+        timer = new Timer();
+    }
+
+    // Constructor legacy para compatibilidad
     public Tower(float x, float y, int hp, int damage, float range, float cooldown) {
         super(x, y, 64, 64, 35, 65, hp, damage, "/tilesheet/tower");
+        this.towerType = TowerType.BASIC;
+        this.level = 1;
+        this.initialCost = TowerType.BASIC.getCost();
         this.range = range;
         this.cooldown = cooldown;
         timer = new Timer();
+    }
+
+    private static int calculateHp(TowerType type, int level) {
+        return (int) (type.getHp() * (1 + (level - 1) * 0.3f));
+    }
+
+    private static int calculateDamage(TowerType type, int level) {
+        return (int) (type.getDamage() * (1 + (level - 1) * 0.4f));
+    }
+
+    private static float calculateRange(TowerType type, int level) {
+        return type.getRange() * (1 + (level - 1) * 0.1f);
+    }
+
+    private static float calculateCooldown(TowerType type, int level) {
+        return Math.max(0.1f, type.getCooldown() * (1 - (level - 1) * 0.1f));
+    }
+
+    public TowerType getTowerType() {
+        return towerType;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public int getInitialCost() {
+        return initialCost;
+    }
+
+    /**
+     * Mejora la torreta al siguiente nivel
+     */
+    public void upgrade() {
+        level++;
+        // Actualizar estadísticas según el nuevo nivel
+        maxHp = calculateHp(towerType, level);
+        hp = maxHp; // Restaurar HP completo al mejorar
+        damage = calculateDamage(towerType, level);
+        range = calculateRange(towerType, level);
+        cooldown = calculateCooldown(towerType, level);
     }
 
     public float getCooldown() {

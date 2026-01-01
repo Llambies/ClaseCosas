@@ -1,9 +1,9 @@
 package com.germangascon.gametemplate.game;
 
-import com.germangascon.gametemplate.core.Config;
 import com.germangascon.gametemplate.core.GameScene;
 import com.germangascon.gametemplate.entities.Entity;
 import com.germangascon.gametemplate.game.entities.*;
+import com.germangascon.gametemplate.game.TowerType;
 import com.germangascon.gametemplate.math.Vector2;
 import com.germangascon.gametemplate.math.GridPos;
 
@@ -51,8 +51,12 @@ public class EntityFactory {
     }
 
     public Tower spawnTower(float x, float y, int level) {
-        // TODO: ajustar propiedades según el nivel
-        Tower tower = new Tower(x, y, 10, 1, 300, 0.8f);
+        // Usar tipo básico por defecto para compatibilidad
+        return spawnTower(x, y, TowerType.BASIC, level);
+    }
+
+    public Tower spawnTower(float x, float y, TowerType towerType, int level) {
+        Tower tower = new Tower(x, y, towerType, level);
         gameScene.spawn(tower);
         return tower;
     }
