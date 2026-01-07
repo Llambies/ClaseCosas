@@ -4,6 +4,7 @@ import com.germangascon.gametemplate.core.Config;
 import com.germangascon.gametemplate.core.GameLauncher;
 import com.germangascon.gametemplate.game.scenes.ExampleScene;
 import com.germangascon.gametemplate.game.scenes.EditorScene;
+import com.germangascon.gametemplate.game.scenes.MainMenuScene;
 
 /**
  * <p><strong>BasicGameTemplate</strong></p>
@@ -16,7 +17,13 @@ import com.germangascon.gametemplate.game.scenes.EditorScene;
  **/
 public class Main {
     public static void main(String[] args) {
-        example();
+        mainMenu();
+    }
+
+    public static void mainMenu() {
+        MainMenuScene menuScene = new MainMenuScene();
+        new GameLauncher("Tower Defense", menuScene, Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT,
+                Config.TILE_SIZE, Config.TARGET_FPS, Config.TARGET_UPDATES);
     }
 
     public static void editor() {

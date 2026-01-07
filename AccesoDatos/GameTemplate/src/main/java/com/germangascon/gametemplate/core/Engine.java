@@ -83,8 +83,23 @@ public class Engine extends Canvas implements Runnable {
      * @param scene Nueva escena
      */
     public void setScene(GameScene scene) {
+        // Remover listeners de la escena anterior
+        if (inputManager != null) {
+            removeKeyListener(inputManager);
+            removeMouseListener(inputManager);
+            removeMouseMotionListener(inputManager);
+        }
+        
         this.currentScene = scene;
+        // Inicializar el engine en la nueva escena
+        currentScene.init(this);
         inputManager = currentScene.getInputManager();
+        
+        // Agregar listeners de la nueva escena
+        addKeyListener(inputManager);
+        addMouseListener(inputManager);
+        addMouseMotionListener(inputManager);
+        
         currentScene.loadAssets();
     }
 
