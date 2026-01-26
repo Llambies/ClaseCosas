@@ -31,6 +31,7 @@ public abstract class GameScene implements GameContext {
     private final List<Entity> toRemove;
     private boolean gamePaused;
     private final Map<String, String> debugInfo;
+    private double timeScale; // Multiplicador de velocidad del juego (1.0 = normal)
 
     public GameScene() {
         entities = new ArrayList<>();
@@ -40,6 +41,7 @@ public abstract class GameScene implements GameContext {
         inputManager = new InputManager();
         debugInfo = new HashMap<>();
         gamePaused = false;
+        timeScale = 1.0; // Velocidad normal por defecto
     }
 
     /**
@@ -56,6 +58,45 @@ public abstract class GameScene implements GameContext {
      */
     public void pause() {
         gamePaused = !gamePaused;
+    }
+
+    /**
+     * Obtiene el multiplicador de velocidad actual
+     * @return Multiplicador de velocidad (1.0 = normal)
+     */
+    public double getTimeScale() {
+        return timeScale;
+    }
+
+    /**
+     * Establece el multiplicador de velocidad del juego
+     * @param scale Multiplicador de velocidad (1.0 = normal, 2.0 = doble velocidad, 0.5 = mitad de velocidad)
+     */
+    public void setTimeScale(double scale) {
+        this.timeScale = Math.max(0.1, Math.min(5.0, scale)); // Limitar entre 0.1x y 5.0x
+    }
+
+    /**
+     * Aumenta la velocidad del juego
+     * @param increment Cantidad a incrementar (por defecto 0.5)
+     */
+    public void increaseTimeScale(double increment) {
+        setTimeScale(timeScale + increment);
+    }
+
+    /**
+     * Disminuye la velocidad del juego
+     * @param decrement Cantidad a decrementar (por defecto 0.5)
+     */
+    public void decreaseTimeScale(double decrement) {
+        setTimeScale(timeScale - decrement);
+    }
+
+    /**
+     * Restablece la velocidad a normal (1.0x)
+     */
+    public void resetTimeScale() {
+        setTimeScale(1.0);
     }
 
     public void addDebugInfo(String key, String value) {
@@ -148,6 +189,11 @@ public abstract class GameScene implements GameContext {
         return engine.getHeight();
     }
 
+    @Override
+    public com.germangascon.gametemplate.game.WaveManager getWaveManager() {
+        return null; // Por defecto no hay WaveManager, las subclases pueden sobrescribir
+    }
+
     /**
      * Elimina del "mundo" la Entity recibida como parámetro
      * @param entity Entity a eliminar
@@ -175,10 +221,12 @@ public abstract class GameScene implements GameContext {
      */
     protected void update(double deltaTime) {
         if (!gamePaused) {
+            // Aplicar el multiplicador de velocidad al deltaTime
+            double scaledDeltaTime = deltaTime * timeScale;
             for (Entity entity : entities) {
-                entity.preUpdate(deltaTime);
-                entity.update(deltaTime);
-                entity.postUpdate(deltaTime);
+                entity.preUpdate(scaledDeltaTime);
+                entity.update(scaledDeltaTime);
+                entity.postUpdate(scaledDeltaTime);
             }
         }
     }
@@ -232,6 +280,12 @@ public abstract class GameScene implements GameContext {
      * Elimina las Entity que están "muertas" y las que están fuera de los límites del "mundo"
      */
     protected void cleanUp() {
+        if (engine == null) {
+            // Si el engine no está inicializado, solo eliminar entities muertas
+            entities.removeIf(e -> !e.isAlive());
+            return;
+        }
+        
         entities.forEach(entity -> {
             Vector2 position = entity.getPosition();
             if (position.x < -entity.getWidth() || position.x > engine.getWidth() + entity.getWidth()  ||
@@ -315,15 +369,49 @@ public abstract class GameScene implements GameContext {
         Image sprite = assetManager.getSprite(entity.getSprite());
         if (sprite != null) {
             Vector2 drawPosition = entity.getDrawPosition();
+            
+            // Aplicar tinte de color para enemigos y torretas con nivel
+            java.awt.Color tintColor = null;
+            if (entity instanceof com.germangascon.gametemplate.game.entities.Tank tank) {
+                tintColor = tank.getEnemyLevel().getTintColor();
+            } else if (entity instanceof com.germangascon.gametemplate.game.entities.Tower tower) {
+                // Aplicar tinte solo si la torreta está mejorada (nivel > 1)
+                if (tower.getLevel() > 1) {
+                    tintColor = tower.getTintColor();
+                }
+            }
+            
             if (entity instanceof DynamicEntity dynamicEntity) {
                 Vector2 direction = dynamicEntity.getDirection();
                 float angle = (float) Math.atan2(direction.y, direction.x);
                 AffineTransform old = g.getTransform();
                 g.rotate(angle, drawPosition.x + entity.getWidth() / 2f, drawPosition.y + entity.getHeight() / 2f);
-                g.drawImage(sprite, (int) drawPosition.x, (int) drawPosition.y, entity.getWidth(), entity.getHeight(), null);
+                
+                if (tintColor != null) {
+                    // Dibujar sprite primero
+                    g.drawImage(sprite, (int) drawPosition.x, (int) drawPosition.y, entity.getWidth(), entity.getHeight(), null);
+                    // Aplicar tinte de color usando modo MULTIPLY
+                    g.setComposite(java.awt.AlphaComposite.getInstance(java.awt.AlphaComposite.SRC_OVER, 0.6f));
+                    g.setColor(tintColor);
+                    g.fillRect((int) drawPosition.x, (int) drawPosition.y, entity.getWidth(), entity.getHeight());
+                    g.setComposite(java.awt.AlphaComposite.getInstance(java.awt.AlphaComposite.SRC_OVER, 1.0f));
+                } else {
+                    g.drawImage(sprite, (int) drawPosition.x, (int) drawPosition.y, entity.getWidth(), entity.getHeight(), null);
+                }
+                
                 g.setTransform(old);
             } else {
-                g.drawImage(sprite, (int) drawPosition.x, (int) drawPosition.y, entity.getWidth(), entity.getHeight(), null);
+                if (tintColor != null) {
+                    // Dibujar sprite primero
+                    g.drawImage(sprite, (int) drawPosition.x, (int) drawPosition.y, entity.getWidth(), entity.getHeight(), null);
+                    // Aplicar tinte de color usando modo MULTIPLY
+                    g.setComposite(java.awt.AlphaComposite.getInstance(java.awt.AlphaComposite.SRC_OVER, 0.6f));
+                    g.setColor(tintColor);
+                    g.fillRect((int) drawPosition.x, (int) drawPosition.y, entity.getWidth(), entity.getHeight());
+                    g.setComposite(java.awt.AlphaComposite.getInstance(java.awt.AlphaComposite.SRC_OVER, 1.0f));
+                } else {
+                    g.drawImage(sprite, (int) drawPosition.x, (int) drawPosition.y, entity.getWidth(), entity.getHeight(), null);
+                }
             }
         }
     }

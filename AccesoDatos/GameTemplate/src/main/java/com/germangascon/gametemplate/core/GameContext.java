@@ -2,6 +2,7 @@ package com.germangascon.gametemplate.core;
 
 import com.germangascon.gametemplate.entities.Entity;
 import com.germangascon.gametemplate.game.EntityFactory;
+import com.germangascon.gametemplate.game.WaveManager;
 import com.germangascon.gametemplate.math.Vector2;
 
 import java.util.Optional;
@@ -24,4 +25,5 @@ public interface GameContext {
     <T extends Entity> Optional<T> findNearestEntity(Class<T> type, Vector2 location, Predicate<T> filter);
     int worldWidth();
     int worldHeight();
+    WaveManager getWaveManager();
 }

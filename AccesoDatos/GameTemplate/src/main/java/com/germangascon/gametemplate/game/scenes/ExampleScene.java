@@ -1,32 +1,34 @@
 package com.germangascon.gametemplate.game.scenes;
 
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Point;
-import java.awt.Toolkit;
-import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.germangascon.gametemplate.core.Config;
 import com.germangascon.gametemplate.core.GameScene;
 import com.germangascon.gametemplate.entities.Entity;
-import com.germangascon.gametemplate.game.Economy;
 import com.germangascon.gametemplate.game.EntityFactory;
-import com.germangascon.gametemplate.game.Level;
-import com.germangascon.gametemplate.game.LevelRepository;
-import com.germangascon.gametemplate.game.TowerType;
 import com.germangascon.gametemplate.game.entities.Tank;
 import com.germangascon.gametemplate.game.entities.Tower;
-import com.germangascon.gametemplate.math.GridPos;
+import com.germangascon.gametemplate.game.TowerType;
 import com.germangascon.gametemplate.math.Vector2;
+import com.germangascon.gametemplate.game.Economy;
+import com.germangascon.gametemplate.math.GridPos;
+import com.germangascon.gametemplate.game.Level;
+import com.germangascon.gametemplate.game.LevelRepository;
+import com.germangascon.gametemplate.game.WaveManager;
+import com.germangascon.gametemplate.game.GameSave;
+import com.germangascon.gametemplate.game.GameSaveManager;
+
+import java.awt.Cursor;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.FontMetrics;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -46,20 +48,24 @@ public class ExampleScene extends GameScene {
     private EntityFactory entityFactory;
     private final Economy economy;
     private LevelRepository levelRepository;
+    private GameSaveManager gameSaveManager;
     private Level currentLevel;
     private HashMap<GridPos, String> levelTiles;
     private List<GridPos> levelWaypoints;
     private TowerType selectedTowerType = TowerType.BASIC;
+    private WaveManager waveManager;
+    private boolean wasWaveInProgress; // Para detectar cuando se completa una oleada
 
     // Modificar el constructor
     public ExampleScene() {
         this.economy = Economy.getInstance();
         this.levelRepository = new LevelRepository();
+        this.gameSaveManager = new GameSaveManager();
         this.levelTiles = new HashMap<>();
         this.levelWaypoints = new ArrayList<>();
-        // Cargar nivel por defecto (puedes cambiar el nombre)
-        loadLevel("nivel_1"); // O el nombre que prefieras
-
+        this.waveManager = new WaveManager(this);
+        this.wasWaveInProgress = false;
+        // No cargar nivel por defecto - se cargará desde el menú o desde un estado guardado
     }
 
     @Override
@@ -73,13 +79,36 @@ public class ExampleScene extends GameScene {
         return entityFactory;
     }
 
+    @Override
+    public WaveManager getWaveManager() {
+        return waveManager;
+    }
+
+    @Override
+    protected void update(double deltaTime) {
+        super.update(deltaTime);
+        // Actualizar el gestor de oleadas con el deltaTime escalado
+        if (waveManager != null) {
+            double scaledDeltaTime = deltaTime * getTimeScale();
+            waveManager.update(scaledDeltaTime);
+            
+            // Detectar cuando se completa una oleada para guardar automáticamente
+            boolean isWaveInProgress = waveManager.isWaveInProgress();
+            if (wasWaveInProgress && !isWaveInProgress && waveManager.isWaitingForNextWave()) {
+                // La oleada acaba de completarse
+                autoSaveGame();
+            }
+            wasWaveInProgress = isWaveInProgress;
+        }
+    }
+
     private void spawnEntities() {
         /*
          * waypoints.add(new Vector2(210, 445));
          * waypoints.add(new Vector2(600, 445));
          */
-        entityFactory.spawnSpawner(Tank.class, levelWaypoints.get(0).getCentro().x, levelWaypoints.get(0).getCentro().y,
-                2, 1);
+        GridPos gridPos = new GridPos(3, 0);
+        entityFactory.spawnSpawner(Tank.class, gridPos.getCentro().x, gridPos.getCentro().y, 2, 1);
         // entityFactory.spawnTank(210, 0, 1);
         // entityFactory.spawnTank(800, 500, 1);
     }
@@ -97,15 +126,17 @@ public class ExampleScene extends GameScene {
             // O cargar múltiples sprites a la vez
             String[][] sprites = {
                     { "/tilesheet/tank", "46", "0", "270" },
-                    { "/tilesheet/tower", "42", "21", "0" },
+                    { "/tilesheet/enemy_basic", "46", "0", "270" },      // Enemigo básico (mismo que tank por ahora)
+                    { "/tilesheet/enemy_fast", "45", "0", "270" },       // Enemigo rápido (sprite diferente)
+                    { "/tilesheet/enemy_heavy", "47", "0", "270" },      // Enemigo pesado (sprite diferente)
+                    { "/tilesheet/enemy_armored", "48", "0", "270" },    // Enemigo blindado (sprite diferente)
+                    { "/tilesheet/tower", "42", "21", "0" },              // Torre genérica (para compatibilidad)
+                    { "/tilesheet/tower_basic", "42", "21", "0" },       // Torre básica
+                    { "/tilesheet/tower_rapid", "44", "21", "0" },       // Torre rápida (sprite diferente)
+                    { "/tilesheet/tower_heavy", "43", "21", "0" },       // Torre pesada (sprite diferente)
+                    { "/tilesheet/path", "11", "1", "0" },
                     { "/tilesheet/bullet", "40", "5", "45" },
                     { "/cursor/base", "35", "10", "0" },
-                    { "/tilesheet/path", "4", "0" },
-                    { "/tilesheet/tree", "4", "1" },
-                    { "/tilesheet/rock", "5", "2" },
-                    { "/tilesheet/bush", "6", "2" },
-                    { "/tilesheet/water", "8", "5" },
-                    { "/tilesheet/grass", "5", "0" },
             };
             assetManager.loadSpritesFromTilesheet(
                     "/tilesheet/colored-transparent_packed.png",
@@ -122,8 +153,7 @@ public class ExampleScene extends GameScene {
     protected void init(com.germangascon.gametemplate.core.Engine engine) {
         super.init(engine);
         // Configurar el cursor después de que el engine esté inicializado
-        // Usar un pequeño delay para asegurar que el engine esté completamente
-        // inicializado
+        // Usar un pequeño delay para asegurar que el engine esté completamente inicializado
         new Thread(() -> {
             try {
                 Thread.sleep(100); // Pequeño delay para asegurar inicialización
@@ -172,6 +202,21 @@ public class ExampleScene extends GameScene {
                 addDebugInfo("LeftClick", "(" + mouseX + ", " + mouseY + ")");
             }
 
+            // Verificar si se hizo clic en el botón de iniciar oleada
+            if (waveManager != null && waveManager.isWaitingForNextWave()) {
+                int buttonX = 10;
+                int buttonY = 160;
+                int buttonWidth = 200;
+                int buttonHeight = 40;
+                
+                if (mouseX >= buttonX && mouseX <= buttonX + buttonWidth &&
+                    mouseY >= buttonY && mouseY <= buttonY + buttonHeight) {
+                    waveManager.forceStartNextWave();
+                    System.out.println("Oleada iniciada manualmente");
+                    return; // No procesar otros clics
+                }
+            }
+
             if (!entities.isEmpty() && entities.getFirst() instanceof Tank entity) {
                 entityFactory.spawnBullet(entity, entity.getX(), entity.getY(), new Vector2(mouseX, mouseY), 1);
             }
@@ -196,13 +241,13 @@ public class ExampleScene extends GameScene {
             if (economy.tengoSuficienteDinero(towerCost)) {
                 Vector2 position = new Vector2(mouseX, mouseY);
                 GridPos gridPos = new GridPos(position);
-
+                
                 // Verificar que no haya otra torreta en esa posición
                 if (findTowerAtPosition(mouseX, mouseY) != null) {
                     System.out.println("Ya hay una torreta en esa posición");
                     return;
                 }
-
+                
                 if (levelTiles.containsKey(gridPos)) {
                     String tile = levelTiles.get(gridPos);
                     if (tile.equals("/tilesheet/path")) {
@@ -232,7 +277,7 @@ public class ExampleScene extends GameScene {
             if (Config.SHOW_DEBUG) {
                 addDebugInfo("RightClick", "(" + mouseX + ", " + mouseY + ")");
             }
-
+            
             // Derribar torreta si hay una en la posición clicada
             Tower clickedTower = findTowerAtPosition(mouseX, mouseY);
             if (clickedTower != null) {
@@ -242,7 +287,7 @@ public class ExampleScene extends GameScene {
                 System.out.println("Torreta derribada. Reembolso: " + refund);
                 return;
             }
-
+            
             // Ejemplo: mover la primera entidad dinámica al punto clicado
             if (!entities.isEmpty() && entities.getFirst() instanceof Tank entity) {
                 entity.getPosition().set(mouseX, mouseY);
@@ -275,27 +320,49 @@ public class ExampleScene extends GameScene {
             pause();
         }
 
+        // Guardar partida manualmente con F5 (guardado adicional al automático)
+        if (inputManager.isKeyJustPressed(KeyEvent.VK_F5)) {
+            saveGameState();
+            System.out.println("Partida guardada manualmente");
+        }
+
+        // Volver al menú con ESC
+        if (inputManager.isKeyJustPressed(KeyEvent.VK_ESCAPE)) {
+            returnToMainMenu();
+        }
+
         // Selección de tipo de torreta con teclas 1, 2, 3
         if (inputManager.isKeyJustPressed(KeyEvent.VK_1)) {
             selectedTowerType = TowerType.BASIC;
-            System.out.println("Torreta seleccionada: " + selectedTowerType.getName() + " (Costo: "
-                    + selectedTowerType.getCost() + ")");
+            System.out.println("Torreta seleccionada: " + selectedTowerType.getName() + " (Costo: " + selectedTowerType.getCost() + ")");
         }
         if (inputManager.isKeyJustPressed(KeyEvent.VK_2)) {
             selectedTowerType = TowerType.RAPID;
-            System.out.println("Torreta seleccionada: " + selectedTowerType.getName() + " (Costo: "
-                    + selectedTowerType.getCost() + ")");
+            System.out.println("Torreta seleccionada: " + selectedTowerType.getName() + " (Costo: " + selectedTowerType.getCost() + ")");
         }
         if (inputManager.isKeyJustPressed(KeyEvent.VK_3)) {
             selectedTowerType = TowerType.HEAVY;
-            System.out.println("Torreta seleccionada: " + selectedTowerType.getName() + " (Costo: "
-                    + selectedTowerType.getCost() + ")");
+            System.out.println("Torreta seleccionada: " + selectedTowerType.getName() + " (Costo: " + selectedTowerType.getCost() + ")");
+        }
+
+        // Control de velocidad con + y -
+        if (inputManager.isKeyJustPressed(KeyEvent.VK_PLUS) || inputManager.isKeyJustPressed(KeyEvent.VK_EQUALS)) {
+            increaseTimeScale(0.5);
+            System.out.println("Velocidad: " + String.format("%.1f", getTimeScale()) + "x");
+        }
+        if (inputManager.isKeyJustPressed(KeyEvent.VK_MINUS)) {
+            decreaseTimeScale(0.5);
+            System.out.println("Velocidad: " + String.format("%.1f", getTimeScale()) + "x");
+        }
+        // Restablecer velocidad a normal con 0
+        if (inputManager.isKeyJustPressed(KeyEvent.VK_0)) {
+            resetTimeScale();
+            System.out.println("Velocidad restablecida a 1.0x");
         }
     }
 
     /**
      * Encuentra una torreta en la posición especificada
-     * 
      * @param x Coordenada X
      * @param y Coordenada Y
      * @return La torreta encontrada o null si no hay ninguna
@@ -344,6 +411,9 @@ public class ExampleScene extends GameScene {
         // Actualizar waypoints del EntityFactory
         entityFactory = new EntityFactory(this, levelWaypoints);
         spawnEntities();
+        
+        // Inicializar el estado de seguimiento de oleadas
+        wasWaveInProgress = waveManager != null && waveManager.isWaveInProgress();
 
         System.out.println("Nivel cargado: " + name);
     }
@@ -370,20 +440,169 @@ public class ExampleScene extends GameScene {
         g.setColor(Color.WHITE);
         g.setFont(new Font("Rubik", Font.BOLD, 24));
         g.drawString("Money: " + economy.getDinero(), 10, 50);
-
+        
+        // Mostrar información de oleadas
+        if (waveManager != null) {
+            g.setFont(new Font("Rubik", Font.BOLD, 20));
+            g.drawString("Oleada: " + waveManager.getCurrentWave(), 10, 110);
+            
+            if (waveManager.isWaveInProgress()) {
+                g.setFont(new Font("Rubik", Font.PLAIN, 16));
+                g.drawString("Enemigos restantes: " + waveManager.getEnemiesRemaining(), 10, 135);
+                g.drawString("Por spawneear: " + waveManager.getEnemiesRemainingToSpawn(), 10, 155);
+            } else if (waveManager.isWaitingForNextWave()) {
+                g.setFont(new Font("Rubik", Font.PLAIN, 16));
+                int timeLeft = (int) Math.ceil(waveManager.getTimeUntilNextWave());
+                g.drawString("Siguiente oleada en: " + timeLeft + "s", 10, 135);
+                
+                // Dibujar botón para iniciar oleada
+                int buttonX = 10;
+                int buttonY = 160;
+                int buttonWidth = 200;
+                int buttonHeight = 40;
+                
+                // Fondo del botón
+                g.setColor(new Color(0, 150, 0, 200));
+                g.fillRect(buttonX, buttonY, buttonWidth, buttonHeight);
+                
+                // Borde del botón
+                g.setColor(Color.WHITE);
+                g.setStroke(new java.awt.BasicStroke(2));
+                g.drawRect(buttonX, buttonY, buttonWidth, buttonHeight);
+                
+                // Texto del botón
+                g.setFont(new Font("Rubik", Font.BOLD, 18));
+                g.setColor(Color.WHITE);
+                String buttonText = "Iniciar Siguiente Oleada";
+                FontMetrics fm = g.getFontMetrics();
+                int textX = buttonX + (buttonWidth - fm.stringWidth(buttonText)) / 2;
+                int textY = buttonY + (buttonHeight + fm.getAscent() - fm.getDescent()) / 2;
+                g.drawString(buttonText, textX, textY);
+            }
+        }
+        
         // Mostrar tipo de torreta seleccionada
         g.setFont(new Font("Rubik", Font.BOLD, 18));
-        g.drawString("Torreta: " + selectedTowerType.getName() + " (Costo: " + selectedTowerType.getCost() + ")", 10,
-                80);
-
+        g.drawString("Torreta: " + selectedTowerType.getName() + " (Costo: " + selectedTowerType.getCost() + ")", 10, 190);
+        
+        // Mostrar velocidad del juego
+        g.setFont(new Font("Rubik", Font.BOLD, 18));
+        String speedText = "Velocidad: " + String.format("%.1f", getTimeScale()) + "x";
+        g.drawString(speedText, 10, 220);
+        
         // Mostrar controles
         g.setFont(new Font("Rubik", Font.PLAIN, 14));
-        g.drawString("1-3: Seleccionar torreta | Click Izq: Colocar/Mejorar | Click Der: Derribar", 10,
-                engine.getHeight() - 20);
+        g.drawString("1-3: Seleccionar torreta | Click Izq: Colocar/Mejorar | Click Der: Derribar | F5: Guardar | ESC: Menú", 10, engine.getHeight() - 40);
+        g.drawString("+/-: Cambiar velocidad | 0: Velocidad normal", 10, engine.getHeight() - 20);
 
         // Entidades
         for (Entity entity : getEntities()) {
             drawEntity(g, entity);
         }
+    }
+
+    /**
+     * Carga un estado guardado de partida
+     */
+    public void loadGameState(GameSave save) {
+        if (save == null || currentLevel == null) {
+            System.out.println("No se puede cargar el estado: partida o nivel nulo");
+            return;
+        }
+
+        // Restaurar dinero - primero establecer a 0 y luego agregar el dinero guardado
+        int currentMoney = economy.getDinero();
+        if (currentMoney != save.getMoney()) {
+            if (currentMoney > save.getMoney()) {
+                // Si tenemos más dinero, gastar la diferencia
+                economy.gastarDinero(currentMoney - save.getMoney());
+            } else {
+                // Si tenemos menos, ganar la diferencia
+                economy.ganarDinero(save.getMoney() - currentMoney);
+            }
+        }
+
+        // Restaurar oleada
+        if (waveManager != null) {
+            waveManager.setCurrentWave(save.getCurrentWave());
+            // Inicializar el estado de seguimiento de oleadas
+            wasWaveInProgress = waveManager.isWaveInProgress();
+        }
+
+        // Restaurar torretas
+        for (GameSave.TowerSave towerSave : save.getTowers()) {
+            try {
+                TowerType towerType = TowerType.valueOf(towerSave.getTowerType());
+                // Crear la torreta con el nivel correcto
+                Tower tower = new Tower(towerSave.getX(), towerSave.getY(), towerType, 1);
+                // Mejorar la torreta al nivel guardado si es mayor que 1
+                for (int i = 1; i < towerSave.getLevel(); i++) {
+                    tower.upgrade();
+                }
+                spawn(tower);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error al cargar torreta: tipo de torreta inválido " + towerSave.getTowerType());
+            }
+        }
+
+        System.out.println("Estado de partida cargado: Oleada " + save.getCurrentWave() + 
+                          ", Dinero: " + save.getMoney() + 
+                          ", Torretas: " + save.getTowers().size());
+    }
+
+    /**
+     * Guarda el estado actual de la partida
+     */
+    public void saveGameState() {
+        if (currentLevel == null) {
+            System.out.println("No se puede guardar: no hay nivel cargado");
+            return;
+        }
+
+        GameSave save = new GameSave();
+        save.setLevelName(currentLevel.getName());
+        save.setCurrentWave(waveManager != null ? waveManager.getCurrentWave() : 0);
+        save.setMoney(economy.getDinero());
+
+        // Guardar todas las torretas
+        List<GameSave.TowerSave> towers = new ArrayList<>();
+        for (Entity entity : getEntities()) {
+            if (entity instanceof Tower tower) {
+                GameSave.TowerSave towerSave = new GameSave.TowerSave(
+                    tower.getX(),
+                    tower.getY(),
+                    tower.getTowerType().name(),
+                    tower.getLevel()
+                );
+                towers.add(towerSave);
+            }
+        }
+        save.setTowers(towers);
+
+        // Guardar en MongoDB
+        gameSaveManager.saveGame(save);
+        System.out.println("Partida guardada: " + currentLevel.getName() + 
+                          " (Oleada: " + save.getCurrentWave() + 
+                          ", Dinero: " + save.getMoney() + 
+                          ", Torretas: " + towers.size() + ")");
+    }
+
+    /**
+     * Guarda automáticamente la partida al completar una oleada
+     */
+    private void autoSaveGame() {
+        if (currentLevel == null) {
+            return; // No guardar si no hay nivel cargado
+        }
+        saveGameState();
+        System.out.println("Partida guardada automáticamente al completar oleada " + waveManager.getCurrentWave());
+    }
+
+    /**
+     * Vuelve al menú principal
+     */
+    private void returnToMainMenu() {
+        MainMenuScene menuScene = new MainMenuScene();
+        engine.setScene(menuScene);
     }
 }

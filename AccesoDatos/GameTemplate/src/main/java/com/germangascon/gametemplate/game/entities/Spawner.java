@@ -2,6 +2,7 @@ package com.germangascon.gametemplate.game.entities;
 
 import com.germangascon.gametemplate.core.Timer;
 import com.germangascon.gametemplate.entities.Entity;
+import com.germangascon.gametemplate.game.WaveManager;
 
 /**
  * <p><strong>Spawner</strong></p>
@@ -45,6 +46,12 @@ public class Spawner extends Entity {
         timer.update(deltaTime);
         if (timer.every(cooldown)) {
             if (entityClass == Tank.class) {
+                // Verificar si se puede spawneear más enemigos según el WaveManager
+                WaveManager waveManager = gameContext.getWaveManager();
+                if (waveManager != null && !waveManager.canSpawnEnemy()) {
+                    return; // No spawneear si no se puede
+                }
+                
                 gameContext.getEntityFactory().spawnTank(this.getX(), this.getY(), level);
             } else {
                 throw new UnsupportedOperationException("Not supported yet.");

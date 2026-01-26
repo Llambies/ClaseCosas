@@ -4,6 +4,9 @@ import com.germangascon.gametemplate.core.GameScene;
 import com.germangascon.gametemplate.entities.Entity;
 import com.germangascon.gametemplate.game.entities.*;
 import com.germangascon.gametemplate.game.TowerType;
+import com.germangascon.gametemplate.game.WaveManager;
+import com.germangascon.gametemplate.game.EnemyType;
+import com.germangascon.gametemplate.game.EnemyLevel;
 import com.germangascon.gametemplate.math.Vector2;
 import com.germangascon.gametemplate.math.GridPos;
 
@@ -44,10 +47,55 @@ public class EntityFactory {
     }
 
     public Tank spawnTank(float x, float y, int level) {
-        // TODO: ajustar propiedades según el nivel
-        Tank tank = new Tank(x, y, 5, 1, 170, waypointsMap.get(Tank.class));
+        // Obtener información de la oleada actual para determinar tipo y nivel
+        WaveManager waveManager = gameScene.getWaveManager();
+        int currentWave = waveManager != null ? waveManager.getCurrentWave() : 1;
+        
+        // Determinar tipo de enemigo basado en la oleada
+        EnemyType enemyType = determineEnemyType(currentWave);
+        
+        // Determinar nivel de enemigo basado en la oleada
+        EnemyLevel enemyLevel = EnemyLevel.fromWave(currentWave);
+        
+        Tank tank = new Tank(x, y, enemyType, enemyLevel, waypointsMap.get(Tank.class));
         gameScene.spawn(tank);
+        
+        // Notificar al WaveManager que se ha spawneado un enemigo
+        if (waveManager != null) {
+            waveManager.onEnemySpawned();
+        }
+        
         return tank;
+    }
+
+    /**
+     * Determina el tipo de enemigo basado en la oleada actual
+     * @param wave Número de oleada
+     * @return Tipo de enemigo
+     */
+    private EnemyType determineEnemyType(int wave) {
+        // Variar tipos de enemigos según la oleada
+        if (wave <= 2) {
+            return EnemyType.BASIC;
+        } else if (wave <= 5) {
+            // Mezclar básicos y rápidos
+            return (wave % 2 == 0) ? EnemyType.BASIC : EnemyType.FAST;
+        } else if (wave <= 10) {
+            // Mezclar todos los tipos
+            int typeIndex = wave % 3;
+            if (typeIndex == 0) return EnemyType.BASIC;
+            if (typeIndex == 1) return EnemyType.FAST;
+            return EnemyType.HEAVY;
+        } else {
+            // Oleadas avanzadas: más variedad
+            int typeIndex = wave % 4;
+            switch (typeIndex) {
+                case 0: return EnemyType.BASIC;
+                case 1: return EnemyType.FAST;
+                case 2: return EnemyType.HEAVY;
+                default: return EnemyType.ARMORED;
+            }
+        }
     }
 
     public Tower spawnTower(float x, float y, int level) {

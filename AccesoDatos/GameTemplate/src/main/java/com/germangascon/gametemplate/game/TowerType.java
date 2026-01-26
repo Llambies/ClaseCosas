@@ -11,9 +11,9 @@ package com.germangascon.gametemplate.game;
  * @since 0.0.1
  **/
 public enum TowerType {
-    BASIC("Básica", 10, 10, 1, 300, 0.8f, "/tilesheet/tower"),
-    RAPID("Rápida", 15, 8, 1, 250, 0.4f, "/tilesheet/tower"),
-    HEAVY("Pesada", 25, 15, 2, 400, 1.2f, "/tilesheet/tower");
+    BASIC("Básica", 10, 10, 1, 300, 0.8f, "/tilesheet/tower_basic"),
+    RAPID("Rápida", 15, 8, 1, 250, 0.4f, "/tilesheet/tower_rapid"),
+    HEAVY("Pesada", 25, 15, 2, 400, 1.2f, "/tilesheet/tower_heavy");
 
     private final String name;
     private final int cost;

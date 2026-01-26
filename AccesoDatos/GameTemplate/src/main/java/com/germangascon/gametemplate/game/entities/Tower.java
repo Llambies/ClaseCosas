@@ -3,8 +3,10 @@ package com.germangascon.gametemplate.game.entities;
 import com.germangascon.gametemplate.core.Timer;
 import com.germangascon.gametemplate.entities.Entity;
 import com.germangascon.gametemplate.game.TowerType;
+import com.germangascon.gametemplate.game.EnemyLevel;
 import com.germangascon.gametemplate.math.Vector2;
 
+import java.awt.Color;
 import java.util.Optional;
 
 /**
@@ -40,7 +42,7 @@ public class Tower extends Entity {
 
     // Constructor legacy para compatibilidad
     public Tower(float x, float y, int hp, int damage, float range, float cooldown) {
-        super(x, y, 64, 64, 35, 65, hp, damage, "/tilesheet/tower");
+        super(x, y, 64, 64, 35, 65, hp, damage, TowerType.BASIC.getSpritePath());
         this.towerType = TowerType.BASIC;
         this.level = 1;
         this.initialCost = TowerType.BASIC.getCost();
@@ -75,6 +77,18 @@ public class Tower extends Entity {
 
     public int getInitialCost() {
         return initialCost;
+    }
+
+    /**
+     * Obtiene el color de tinte basado en el nivel de la torreta
+     * Usa los mismos colores que los enemigos para mantener consistencia visual
+     * @return Color de tinte correspondiente al nivel
+     */
+    public Color getTintColor() {
+        // Limitar el nivel a 6 (máximo nivel de EnemyLevel)
+        int effectiveLevel = Math.min(level, 6);
+        EnemyLevel enemyLevel = EnemyLevel.getByLevel(effectiveLevel);
+        return enemyLevel.getTintColor();
     }
 
     /**
