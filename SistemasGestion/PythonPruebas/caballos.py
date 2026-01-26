@@ -132,7 +132,7 @@ if __name__ == "__main__":
     # Crear e iniciar los hilos
     hilos = []
     for nombre in caballos_nombre:
-        hilo = threading.Thread(target=caballo, args=(nombre,))
+        hilo = threading.Thread(target=caballo, args=(nombre,), daemon=True)
         hilos.append(hilo)
         hilo.start()
     
