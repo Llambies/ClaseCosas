@@ -2,8 +2,8 @@ package com.germangascon.gametemplate;
 
 import com.germangascon.gametemplate.core.Config;
 import com.germangascon.gametemplate.core.GameLauncher;
-import com.germangascon.gametemplate.game.scenes.ExampleScene;
 import com.germangascon.gametemplate.game.scenes.EditorScene;
+import com.germangascon.gametemplate.game.scenes.ExampleScene;
 
 /**
  * <p><strong>BasicGameTemplate</strong></p>

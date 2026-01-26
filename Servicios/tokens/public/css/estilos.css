@@ -1,0 +1,14 @@
+body
+{
+    font-family: Arial
+}
+
+#cabecera
+{
+    margin-bottom: 30px;
+}
+
+#loginError
+{
+    display: none;
+}

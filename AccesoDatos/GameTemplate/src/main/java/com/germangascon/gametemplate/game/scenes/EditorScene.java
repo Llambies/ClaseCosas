@@ -1,22 +1,24 @@
 package com.germangascon.gametemplate.game.scenes;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.germangascon.gametemplate.core.Config;
 import com.germangascon.gametemplate.core.GameScene;
 import com.germangascon.gametemplate.entities.Entity;
 import com.germangascon.gametemplate.game.EntityFactory;
-import com.germangascon.gametemplate.game.LevelRepository;
-import com.germangascon.gametemplate.game.entities.Tank;
-import com.germangascon.gametemplate.math.Vector2;
-import com.germangascon.gametemplate.game.Economy;
-import com.germangascon.gametemplate.math.GridPos;
 import com.germangascon.gametemplate.game.Level;
-import java.awt.*;
-import java.util.HashMap;
-import java.awt.event.KeyEvent;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import com.germangascon.gametemplate.game.LevelRepository;
+import com.germangascon.gametemplate.math.GridPos;
+import com.germangascon.gametemplate.math.Vector2;
 
 /**
  * <p>
@@ -66,7 +68,6 @@ public class EditorScene extends GameScene {
         try {
             // O cargar múltiples sprites a la vez
             String[][] sprites = {
-                    { "/tilesheet/background", "0", "0" },
                     { "/tilesheet/path", "4", "0" },
                     { "/tilesheet/tree", "4", "1" },
                     { "/tilesheet/rock", "5", "2" },
@@ -79,6 +80,18 @@ public class EditorScene extends GameScene {
                     Config.TILE_SIZE / 4,
                     Config.TILE_SIZE / 4,
                     sprites);
+
+            String[][] background = {
+                { "/tilesheet/background", "0", "0" },
+            };
+
+            assetManager.loadSpritesFromTilesheet(
+                    "/tilesheet/colored_packed.png",
+                    Config.TILE_SIZE / 4,
+                    Config.TILE_SIZE / 4,
+                    background);
+
+
         } catch (IOException e) {
             throw new RuntimeException("Error cargando assets", e);
         }
@@ -177,14 +190,13 @@ public class EditorScene extends GameScene {
 
         if (inputManager.isKeyJustPressed(KeyEvent.VK_S) && inputManager.isKeyDown(KeyEvent.VK_CONTROL)) {
             // Guardar nivel (Ctrl+S)
-            // Por ahora guarda con un nombre por defecto, puedes mejorarlo con un diálogo
-            // saveLevel("nivel_" + System.currentTimeMillis());
+            // Por ahora guarda con un nombre por defecto
             saveLevel("nivel_1");
         }
 
         if (inputManager.isKeyJustPressed(KeyEvent.VK_O) && inputManager.isKeyDown(KeyEvent.VK_CONTROL)) {
             // Cargar nivel (Ctrl+O)
-            // Por ahora carga el primer nivel encontrado, puedes mejorarlo con un diálogo
+            // Por ahora carga el primer nivel encontrado
             List<String> levels = getLevelNames();
             if (!levels.isEmpty()) {
                 loadLevel(levels.get(0));

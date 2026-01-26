@@ -1,30 +1,32 @@
 package com.germangascon.gametemplate.game.scenes;
 
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.germangascon.gametemplate.core.Config;
 import com.germangascon.gametemplate.core.GameScene;
 import com.germangascon.gametemplate.entities.Entity;
-import com.germangascon.gametemplate.game.EntityFactory;
-import com.germangascon.gametemplate.game.entities.Tank;
-import com.germangascon.gametemplate.game.entities.Tower;
-import com.germangascon.gametemplate.game.TowerType;
-import com.germangascon.gametemplate.math.Vector2;
 import com.germangascon.gametemplate.game.Economy;
-import com.germangascon.gametemplate.math.GridPos;
+import com.germangascon.gametemplate.game.EntityFactory;
 import com.germangascon.gametemplate.game.Level;
 import com.germangascon.gametemplate.game.LevelRepository;
-
-import java.awt.Cursor;
-import java.awt.Point;
-import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import com.germangascon.gametemplate.game.TowerType;
+import com.germangascon.gametemplate.game.entities.Tank;
+import com.germangascon.gametemplate.game.entities.Tower;
+import com.germangascon.gametemplate.math.GridPos;
+import com.germangascon.gametemplate.math.Vector2;
 
 /**
  * <p>
@@ -76,8 +78,8 @@ public class ExampleScene extends GameScene {
          * waypoints.add(new Vector2(210, 445));
          * waypoints.add(new Vector2(600, 445));
          */
-        GridPos gridPos = new GridPos(3, 0);
-        entityFactory.spawnSpawner(Tank.class, gridPos.getCentro().x, gridPos.getCentro().y, 2, 1);
+        entityFactory.spawnSpawner(Tank.class, levelWaypoints.get(0).getCentro().x, levelWaypoints.get(0).getCentro().y,
+                2, 1);
         // entityFactory.spawnTank(210, 0, 1);
         // entityFactory.spawnTank(800, 500, 1);
     }
@@ -96,9 +98,14 @@ public class ExampleScene extends GameScene {
             String[][] sprites = {
                     { "/tilesheet/tank", "46", "0", "270" },
                     { "/tilesheet/tower", "42", "21", "0" },
-                    { "/tilesheet/path", "11", "1", "0" },
                     { "/tilesheet/bullet", "40", "5", "45" },
                     { "/cursor/base", "35", "10", "0" },
+                    { "/tilesheet/path", "4", "0" },
+                    { "/tilesheet/tree", "4", "1" },
+                    { "/tilesheet/rock", "5", "2" },
+                    { "/tilesheet/bush", "6", "2" },
+                    { "/tilesheet/water", "8", "5" },
+                    { "/tilesheet/grass", "5", "0" },
             };
             assetManager.loadSpritesFromTilesheet(
                     "/tilesheet/colored-transparent_packed.png",
@@ -115,7 +122,8 @@ public class ExampleScene extends GameScene {
     protected void init(com.germangascon.gametemplate.core.Engine engine) {
         super.init(engine);
         // Configurar el cursor después de que el engine esté inicializado
-        // Usar un pequeño delay para asegurar que el engine esté completamente inicializado
+        // Usar un pequeño delay para asegurar que el engine esté completamente
+        // inicializado
         new Thread(() -> {
             try {
                 Thread.sleep(100); // Pequeño delay para asegurar inicialización
@@ -188,13 +196,13 @@ public class ExampleScene extends GameScene {
             if (economy.tengoSuficienteDinero(towerCost)) {
                 Vector2 position = new Vector2(mouseX, mouseY);
                 GridPos gridPos = new GridPos(position);
-                
+
                 // Verificar que no haya otra torreta en esa posición
                 if (findTowerAtPosition(mouseX, mouseY) != null) {
                     System.out.println("Ya hay una torreta en esa posición");
                     return;
                 }
-                
+
                 if (levelTiles.containsKey(gridPos)) {
                     String tile = levelTiles.get(gridPos);
                     if (tile.equals("/tilesheet/path")) {
@@ -224,7 +232,7 @@ public class ExampleScene extends GameScene {
             if (Config.SHOW_DEBUG) {
                 addDebugInfo("RightClick", "(" + mouseX + ", " + mouseY + ")");
             }
-            
+
             // Derribar torreta si hay una en la posición clicada
             Tower clickedTower = findTowerAtPosition(mouseX, mouseY);
             if (clickedTower != null) {
@@ -234,7 +242,7 @@ public class ExampleScene extends GameScene {
                 System.out.println("Torreta derribada. Reembolso: " + refund);
                 return;
             }
-            
+
             // Ejemplo: mover la primera entidad dinámica al punto clicado
             if (!entities.isEmpty() && entities.getFirst() instanceof Tank entity) {
                 entity.getPosition().set(mouseX, mouseY);
@@ -270,20 +278,24 @@ public class ExampleScene extends GameScene {
         // Selección de tipo de torreta con teclas 1, 2, 3
         if (inputManager.isKeyJustPressed(KeyEvent.VK_1)) {
             selectedTowerType = TowerType.BASIC;
-            System.out.println("Torreta seleccionada: " + selectedTowerType.getName() + " (Costo: " + selectedTowerType.getCost() + ")");
+            System.out.println("Torreta seleccionada: " + selectedTowerType.getName() + " (Costo: "
+                    + selectedTowerType.getCost() + ")");
         }
         if (inputManager.isKeyJustPressed(KeyEvent.VK_2)) {
             selectedTowerType = TowerType.RAPID;
-            System.out.println("Torreta seleccionada: " + selectedTowerType.getName() + " (Costo: " + selectedTowerType.getCost() + ")");
+            System.out.println("Torreta seleccionada: " + selectedTowerType.getName() + " (Costo: "
+                    + selectedTowerType.getCost() + ")");
         }
         if (inputManager.isKeyJustPressed(KeyEvent.VK_3)) {
             selectedTowerType = TowerType.HEAVY;
-            System.out.println("Torreta seleccionada: " + selectedTowerType.getName() + " (Costo: " + selectedTowerType.getCost() + ")");
+            System.out.println("Torreta seleccionada: " + selectedTowerType.getName() + " (Costo: "
+                    + selectedTowerType.getCost() + ")");
         }
     }
 
     /**
      * Encuentra una torreta en la posición especificada
+     * 
      * @param x Coordenada X
      * @param y Coordenada Y
      * @return La torreta encontrada o null si no hay ninguna
@@ -358,14 +370,16 @@ public class ExampleScene extends GameScene {
         g.setColor(Color.WHITE);
         g.setFont(new Font("Rubik", Font.BOLD, 24));
         g.drawString("Money: " + economy.getDinero(), 10, 50);
-        
+
         // Mostrar tipo de torreta seleccionada
         g.setFont(new Font("Rubik", Font.BOLD, 18));
-        g.drawString("Torreta: " + selectedTowerType.getName() + " (Costo: " + selectedTowerType.getCost() + ")", 10, 80);
-        
+        g.drawString("Torreta: " + selectedTowerType.getName() + " (Costo: " + selectedTowerType.getCost() + ")", 10,
+                80);
+
         // Mostrar controles
         g.setFont(new Font("Rubik", Font.PLAIN, 14));
-        g.drawString("1-3: Seleccionar torreta | Click Izq: Colocar/Mejorar | Click Der: Derribar", 10, engine.getHeight() - 20);
+        g.drawString("1-3: Seleccionar torreta | Click Izq: Colocar/Mejorar | Click Der: Derribar", 10,
+                engine.getHeight() - 20);
 
         // Entidades
         for (Entity entity : getEntities()) {

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <!-- Propiedades de conexión a la base de datos -->
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/kanban_db</property>
+        <property name="hibernate.connection.username">kanban_user</property>
+        <property name="hibernate.connection.password">kanban_password</property>
+        
+        <!-- Configuración del pool de conexiones -->
+        <property name="hibernate.connection.pool_size">5</property>
+        
+        <!-- Mostrar SQL en consola (útil para desarrollo) -->
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.format_sql">true</property>
+        
+        <!-- Actualizar el esquema automáticamente (cuidado en producción) -->
+        <property name="hibernate.hbm2ddl.auto">update</property>
+
+        <!-- Contexto de sesión para aplicaciones de hilo único/escritorio -->
+        <property name="hibernate.current_session_context_class">thread</property>
+        
+        <!-- Mapear las entidades -->
+        <mapping class="org.adrian.entities.Tarjeta"/>
+        <mapping class="org.adrian.entities.Columna"/>
+        <mapping class="org.adrian.entities.Tablero"/>
+        <mapping class="org.adrian.entities.Usuario"/>
+        <mapping class="org.adrian.entities.Etiqueta"/>
+        <!-- Agrega aquí más entidades cuando las crees -->
+    </session-factory>
+</hibernate-configuration>
