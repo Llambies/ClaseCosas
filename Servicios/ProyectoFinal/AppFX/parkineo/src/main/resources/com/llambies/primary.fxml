@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -27,13 +28,14 @@
          <Label text="Planta:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
          <TextField fx:id="txtPlanta" prefWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
          <Label text="Tipo:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-         <TextField fx:id="txtTipo" prefWidth="150" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+         <ComboBox fx:id="comboTipo" prefWidth="150" promptText="Selecciona tipo" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
       </GridPane>
       <HBox spacing="10" alignment="CENTER">
          <Button text="Refrescar" onAction="#refrescarPlazas"/>
          <Button text="Insertar" onAction="#insertarPlaza"/>
          <Button text="Actualizar" onAction="#actualizarPlaza"/>
          <Button text="Borrar" onAction="#borrarPlaza"/>
+         <Button text="Cerrar sesión" onAction="#cerrarSesion"/>
       </HBox>
       <Label fx:id="lblEstado" text="" wrapText="true"/>
    </children>

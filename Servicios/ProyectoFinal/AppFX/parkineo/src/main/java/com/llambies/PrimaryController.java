@@ -1,10 +1,12 @@
 package com.llambies;
 
+import java.io.IOException;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
@@ -28,12 +30,13 @@ public class PrimaryController {
     @FXML
     private TextField txtPlanta;
     @FXML
-    private TextField txtTipo;
+    private ComboBox<String> comboTipo;
     @FXML
     private Label lblEstado;
 
     @FXML
     private void initialize() {
+        comboTipo.getItems().addAll("normal", "electrico", "discapacitado");
         colNumero.setCellValueFactory(new PropertyValueFactory<>("numero"));
         colPlanta.setCellValueFactory(new PropertyValueFactory<>("planta"));
         colTipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));
@@ -46,7 +49,7 @@ public class PrimaryController {
         if (selectedPlaza != null) {
             txtNumero.setText(String.valueOf(selectedPlaza.getNumero()));
             txtPlanta.setText(String.valueOf(selectedPlaza.getPlanta()));
-            txtTipo.setText(selectedPlaza.getTipo());
+            comboTipo.setValue(selectedPlaza.getTipo());
         }
     }
 
@@ -145,9 +148,9 @@ public class PrimaryController {
         try {
             int numero = Integer.parseInt(txtNumero.getText().trim());
             int planta = Integer.parseInt(txtPlanta.getText().trim());
-            String tipo = txtTipo.getText() != null ? txtTipo.getText().trim() : "";
+            String tipo = comboTipo.getValue() != null ? comboTipo.getValue().trim() : "";
             if (tipo.isEmpty()) {
-                lblEstado.setText("El campo Tipo es obligatorio.");
+                lblEstado.setText("Selecciona un tipo de plaza.");
                 return null;
             }
             return new Plaza(numero, planta, tipo);
@@ -160,6 +163,11 @@ public class PrimaryController {
     private void limpiarFormulario() {
         txtNumero.clear();
         txtPlanta.clear();
-        txtTipo.clear();
+        comboTipo.setValue(null);
+    }
+
+    @FXML
+    private void cerrarSesion() throws IOException {
+        App.setRoot("cliente");
     }
 }

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" spacing="20" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.llambies.ClienteController">
+   <padding><Insets bottom="25" left="25" right="25" top="25"/></padding>
+   <children>
+      <HBox spacing="20" alignment="CENTER_LEFT">
+         <Label text="Parkineo - Cliente" style="-fx-font-size: 22; -fx-font-weight: bold;"/>
+         <Button text="Acceso Admin" onAction="#abrirModalAdmin" style="-fx-font-size: 12;"/>
+      </HBox>
+      
+      <VBox fx:id="panelDisponible" spacing="12" visible="true" managed="true">
+         <Label text="¿Hay plazas disponibles?" style="-fx-font-size: 14;"/>
+         <HBox spacing="15" alignment="CENTER_LEFT">
+            <Label text="Tipo de plaza:"/>
+            <ComboBox fx:id="comboTipo" prefWidth="140" promptText="Selecciona tipo"/>
+            <Button text="Comprobar disponibilidad" onAction="#comprobarDisponibilidad"/>
+         </HBox>
+         <Label fx:id="lblDisponibilidad" text="" wrapText="true"/>
+         <Button fx:id="btnAparcar" text="Aparcar" onAction="#aparcar" visible="false" managed="false"/>
+      </VBox>
+
+      <VBox fx:id="panelAparcado" spacing="12" visible="false" managed="false">
+         <Label text="Estacionamiento activo" style="-fx-font-size: 16; -fx-font-weight: bold;"/>
+         <Label fx:id="lblPlazaAsignada" text="" style="-fx-font-size: 14;"/>
+         <GridPane hgap="20" vgap="8">
+            <Label text="Tiempo:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <Label fx:id="lblTiempo" text="0 min" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+            <Label text="Precio total:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            <Label fx:id="lblPrecio" text="0.00 €" style="-fx-font-weight: bold;" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+         </GridPane>
+         <Button text="Abandonar parking" onAction="#abandonarParking" style="-fx-font-weight: bold;"/>
+      </VBox>
+
+      <Button fx:id="btnVolverInicio" text="Volver al inicio" onAction="#volverInicio"/>
+      <Label fx:id="lblEstado" text="" wrapText="true" style="-fx-text-fill: #c00;"/>
+   </children>
+</VBox>

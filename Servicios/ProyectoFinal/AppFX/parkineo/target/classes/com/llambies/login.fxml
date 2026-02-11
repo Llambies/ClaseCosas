@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.GridPane?>
+
+<VBox alignment="CENTER" spacing="25" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.llambies.LoginController">
+   <padding><Insets bottom="30" left="40" right="40" top="30"/></padding>
+   <children>
+      <Label text="Parkineo" style="-fx-font-size: 28; -fx-font-weight: bold;"/>
+      <Label text="Accede a la aplicación" style="-fx-font-size: 14; -fx-text-fill: #666;"/>
+      <GridPane hgap="12" vgap="15">
+         <Label text="PIN Admin:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+         <PasswordField fx:id="txtPin" promptText="Introduce el PIN" prefWidth="180" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+      </GridPane>
+      <HBox spacing="15" alignment="CENTER">
+         <Button text="Acceder como Admin" onAction="#onAdmin" style="-fx-font-weight: bold;"/>
+         <Button text="Entrar como Cliente" onAction="#onCliente" style="-fx-font-weight: bold;"/>
+      </HBox>
+      <Label fx:id="lblEstado" text="" wrapText="true" style="-fx-text-fill: #c00;"/>
+   </children>
+</VBox>
