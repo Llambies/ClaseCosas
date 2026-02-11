@@ -1,0 +1,4 @@
+INDEX VERSION 1.134+/home/owoma/ClaseCosas/AccesoDatos/TowerDefense/.jdtls/.metadata/.plugins/org.eclipse.jdt.core
+3441091947.index
+1865797976.index
+3842426239.index

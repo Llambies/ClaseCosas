@@ -145,6 +145,11 @@ public class EditorScene extends GameScene {
             pause();
         }
 
+        // Volver al menú con ESC
+        if (inputManager.isKeyJustPressed(KeyEvent.VK_ESCAPE)) {
+            returnToMainMenu();
+        }
+
         if (inputManager.isKeyJustPressed(KeyEvent.VK_1)) {
             hotbarIndex = 0;
         }
@@ -320,5 +325,13 @@ public class EditorScene extends GameScene {
             names.add(level.getName());
         }
         return names;
+    }
+
+    /**
+     * Vuelve al menú principal
+     */
+    private void returnToMainMenu() {
+        MainMenuScene menuScene = new MainMenuScene();
+        engine.setScene(menuScene);
     }
 }
