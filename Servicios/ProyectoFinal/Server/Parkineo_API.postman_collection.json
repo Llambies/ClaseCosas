@@ -1,0 +1,53 @@
+{
+  "info": {
+    "name": "Parkineo API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "GET Info API",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:3000/"
+      }
+    },
+    {
+      "name": "GET Listar plazas",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:3000/plazas"
+      }
+    },
+    {
+      "name": "POST Insertar plaza",
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"numero\": 1, \"planta\": 0, \"tipo\": \"normal\"}"
+        },
+        "url": "http://localhost:3000/plazas"
+      }
+    },
+    {
+      "name": "PUT Actualizar plaza",
+      "request": {
+        "method": "PUT",
+        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"numero\": 1, \"planta\": 0, \"tipo\": \"discapacitados\"}"
+        },
+        "url": "http://localhost:3000/plazas/{{id}}"
+      }
+    },
+    {
+      "name": "DELETE Borrar plaza",
+      "request": {
+        "method": "DELETE",
+        "url": "http://localhost:3000/plazas/{{id}}"
+      }
+    }
+  ]
+}

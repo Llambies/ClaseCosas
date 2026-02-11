@@ -2,6 +2,7 @@ package com.llambies;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -9,7 +10,7 @@ import java.net.http.HttpResponse;
 import java.util.List;
 
 public class ParkinAPI {
-    private final String baseUrl; // Ej: "http://localhost:3000"
+    private final String baseUrl;
     private final HttpClient client = HttpClient.newHttpClient();
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -24,67 +25,57 @@ public class ParkinAPI {
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         if (response.statusCode() / 100 != 2) {
-            throw new RuntimeException("GET /plazas -> " +
-                    response.statusCode() + " | " + response.body());
+            throw new RuntimeException("GET /plazas -> " + response.statusCode() + " | " + response.body());
         }
-        return mapper.readValue(response.body(),
-                new TypeReference<List<Plaza>>() {});
+        return mapper.readValue(response.body(), new TypeReference<List<Plaza>>() {});
     }
 
-    public void insertarPlaza(Plaza p) throws Exception {
-        String json = mapper.writeValueAsString(p);
+    public Plaza insertarPlaza(Plaza p) throws Exception {
+        String json = mapper.writeValueAsString(java.util.Map.of(
+                "numero", p.getNumero(),
+                "planta", p.getPlanta(),
+                "tipo", p.getTipo() != null ? p.getTipo() : ""
+        ));
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(baseUrl + "/insertPlaza"))
+                .uri(URI.create(baseUrl + "/plazas"))
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(json))
                 .build();
-        HttpResponse response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         if (response.statusCode() / 100 != 2) {
-            throw new RuntimeException("POST /insertPlaza -> " +
-                    response.statusCode() + " | " + response.body());
+            throw new RuntimeException("POST /plazas -> " + response.statusCode() + " | " + response.body());
         }
+        return mapper.readValue(response.body(), Plaza.class);
     }
 
     public void actualizarPlaza(Plaza p) throws Exception {
-        String json = mapper.writeValueAsString(p);
+        if (p.getId() == null || p.getId().isEmpty()) {
+            throw new RuntimeException("Se necesita _id para actualizar");
+        }
+        String json = mapper.writeValueAsString(java.util.Map.of(
+                "numero", p.getNumero(),
+                "planta", p.getPlanta(),
+                "tipo", p.getTipo() != null ? p.getTipo() : ""
+        ));
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(baseUrl + "/updatePlaza"))
+                .uri(URI.create(baseUrl + "/plazas/" + p.getId()))
                 .header("Content-Type", "application/json")
                 .PUT(HttpRequest.BodyPublishers.ofString(json))
                 .build();
-        HttpResponse response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         if (response.statusCode() / 100 != 2) {
-            throw new RuntimeException("PUT /update -> " +
-                    response.statusCode() + " | " + response.body());
+            throw new RuntimeException("PUT /plazas/:id -> " + response.statusCode() + " | " + response.body());
         }
     }
 
-    // Opción A (recomendada): DELETE /delete/:codigo
-    public void borrarPlazaPorPath(String numero) throws Exception {
+    public void borrarPlaza(String id) throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(baseUrl + "/delete/" + numero))
+                .uri(URI.create(baseUrl + "/plazas/" + id))
                 .DELETE()
                 .build();
-        HttpResponse response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         if (response.statusCode() / 100 != 2) {
-            throw new RuntimeException("DELETE /delete/:codigo -> " +
-                    response.statusCode() + " | " + response.body());
+            throw new RuntimeException("DELETE /plazas/:id -> " + response.statusCode() + " | " + response.body());
         }
-    }
-
-    // Opción B: DELETE /delete con body JSON {codigo:"..."}
-    public void borrarDeportistaPorBody(String codigo) throws Exception {
-        String json = "{\"codigo\":\"" + codigo + "\"}";
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(baseUrl + "/delete"))
-                .header("Content-Type", "application/json")
-                .method("DELETE", HttpRequest.BodyPublishers.ofString(json))
-                .build();
-        HttpResponse response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        if (response.statusCode() / 100 != 2) {
-            throw new RuntimeException("DELETE /delete (body) -> " +
-                    response.statusCode() + " | " + response.body());
-        }
-
     }
 }
