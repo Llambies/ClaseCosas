@@ -1,19 +1,20 @@
 package com.germangascon.gametemplate.game;
 
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.Filters;
-import com.mongodb.ConnectionString;
-import com.mongodb.MongoClientSettings;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.types.ObjectId;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.mongodb.ConnectionString;
+import com.mongodb.MongoClientSettings;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 
 /**
  * Repositorio para gestionar niveles en MongoDB
@@ -52,7 +53,7 @@ public class LevelRepository {
         if (level.getId() == null) {
             collection.insertOne(level);
         } else {
-            collection.replaceOne(Filters.eq("_id", level.getId()), level);
+            collection.replaceOne(Filters.eq("name", level.getName()), level);
         }
     }
 

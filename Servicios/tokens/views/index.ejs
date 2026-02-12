@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf8">
+        <link href="/public/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/public/css/estilos.css" rel="stylesheet">
+        <script type="text/javascript" src="/public/js/jquery.min.js"></script>
+        <script type="text/javascript" src="/public/js/app.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div id="cabecera">
+                <a class="btn btn-secondary" href="javascript:cargar('/inicio')">Inicio</a>&nbsp;&nbsp;&nbsp;
+                <a class="btn btn-secondary" href="javascript:cargar('/protegido')">Zona protegida</a>&nbsp;&nbsp;&nbsp;        
+                <a class="btn btn-secondary" href="javascript:cargar('/login')">Login</a>&nbsp;&nbsp;&nbsp;        
+            </div>            
+            <div id="contenido">
+                <%-include('inicio');%>
+            </div>
+        </div>
+    </body>        
+</html>
