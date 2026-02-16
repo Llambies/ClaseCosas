@@ -2,18 +2,41 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_2/models/tarea.dart';
 import 'package:flutter_application_2/widgets/logo.dart';
 
+/// Pantalla para agregar o editar una tarea.
+/// 
+/// Permite al usuario crear una nueva tarea o editar una existente.
+/// El formulario incluye:
+/// - Campo de título (obligatorio)
+/// - Campo de descripción (opcional)
+/// - Selector de categoría (personal, trabajo, otro)
+/// 
+/// Si se proporciona [tareaParaEditar], la pantalla se usa en modo edición
+/// y los campos se prellenan con los datos de la tarea existente.
+/// 
+/// Valida que el título no esté vacío antes de permitir guardar.
 class PaginaAgregarTarea extends StatefulWidget {
+  /// Crea una instancia de [PaginaAgregarTarea].
+  /// 
+  /// [tareaParaEditar] si se proporciona, la pantalla se usa para editar
+  /// esta tarea en lugar de crear una nueva.
   const PaginaAgregarTarea({super.key, this.tareaParaEditar});
 
+  /// Tarea a editar, o `null` si se está creando una nueva tarea.
   final Tarea? tareaParaEditar;
 
   @override
   State<PaginaAgregarTarea> createState() => _PaginaAgregarTareaState();
 }
 
+/// Estado del formulario de agregar/editar tarea.
 class _PaginaAgregarTareaState extends State<PaginaAgregarTarea> {
+  /// Controlador para el campo de título.
   final TextEditingController _titulo = TextEditingController();
+  
+  /// Controlador para el campo de descripción.
   final TextEditingController _descripcion = TextEditingController();
+  
+  /// Categoría seleccionada actualmente.
   Categoria _categoriaSeleccionada = Categoria.otro;
 
   @override
@@ -34,6 +57,13 @@ class _PaginaAgregarTareaState extends State<PaginaAgregarTarea> {
     super.dispose();
   }
 
+  /// Guarda la tarea y retorna al navegador anterior.
+  /// 
+  /// Valida que el título no esté vacío. Si está vacío, muestra un
+  /// SnackBar con un mensaje de error. Si es válido, crea o actualiza
+  /// la tarea y la retorna al navegador anterior mediante `Navigator.pop`.
+  /// 
+  /// En modo edición, usa `copyWith` para mantener el ID original de la tarea.
   void _guardarTarea() {
     if (_titulo.text.isNotEmpty) {
       // Si estamos editando, usamos copyWith para mantener el ID

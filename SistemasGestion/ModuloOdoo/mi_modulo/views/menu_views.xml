@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Acción para abrir las tareas -->
+    <record id="action_tarea" model="ir.actions.act_window">
+        <field name="name">Tareas</field>
+        <field name="res_model">mi_modulo.tarea</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crea tu primera tarea
+            </p>
+            <p>
+                Usa el botón <strong>Nuevo</strong> para crear una tarea, o el menú
+                <strong>Tarea Rápida</strong> para crear tareas con lenguaje natural.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menú principal: al clicar abre directamente la lista de tareas -->
+    <menuitem
+        id="menu_mi_modulo_root"
+        name="Gestor de Tareas"
+        action="action_tarea"
+        sequence="100"
+    />
+
+    <!-- Acción para Añadir Tarea Rápida (popup en vista separada) -->
+    <record id="action_tarea_quick_add" model="ir.actions.act_window">
+        <field name="name">Añadir Tarea Rápida</field>
+        <field name="res_model">mi_modulo.tarea.quick_add.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Submenú Tareas -->
+    <menuitem
+        id="menu_tarea"
+        name="Tareas"
+        parent="menu_mi_modulo_root"
+        action="action_tarea"
+        sequence="10"
+    />
+
+    <!-- Submenú Tarea Rápida (abre el wizard en popup) -->
+    <menuitem
+        id="menu_tarea_quick_add"
+        name="Tarea Rápida"
+        parent="menu_mi_modulo_root"
+        action="action_tarea_quick_add"
+        sequence="20"
+    />
+
+</odoo>

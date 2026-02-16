@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Vista lista (tree) -->
+    <record id="view_tarea_tree" model="ir.ui.view">
+        <field name="name">mi_modulo.tarea.tree</field>
+        <field name="model">mi_modulo.tarea</field>
+        <field name="arch" type="xml">
+            <tree string="Tareas">
+                <field name="name"/>
+                <field name="sale_order_id"/>
+                <field name="estado"/>
+                <field name="prioridad"/>
+                <field name="fecha_limite"/>
+                <field name="fecha_hora_limite"/>
+                <field name="fecha_creacion"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista formulario -->
+    <record id="view_tarea_form" model="ir.ui.view">
+        <field name="name">mi_modulo.tarea.form</field>
+        <field name="model">mi_modulo.tarea</field>
+        <field name="arch" type="xml">
+            <form string="Tarea">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="sale_order_id"/>
+                            <field name="estado"/>
+                            <field name="prioridad"/>
+                            <field name="fecha_limite"/>
+                            <field name="fecha_hora_limite"/>
+                        </group>
+                        <group>
+                            <field name="activo"/>
+                            <field name="fecha_creacion"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description" placeholder="Describe la tarea..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

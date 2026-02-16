@@ -2,7 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_2/core/colores_app.dart';
 import 'package:flutter_application_2/models/tarea.dart';
 
+/// Widget que representa una tarjeta visual para una tarea.
+/// 
+/// Muestra la información de una tarea en formato de tarjeta con:
+/// - Checkbox para marcar/desmarcar como completada
+/// - Título y descripción de la tarea
+/// - Badge con la categoría
+/// - Botones para editar y eliminar
+/// - Handle de arrastre para reordenamiento (si se proporciona índice)
+/// 
+/// El botón de editar solo se muestra si la tarea no está completada.
+/// Los colores se adaptan automáticamente al tema claro/oscuro.
 class TarjetaTarea extends StatelessWidget {
+  /// Crea una instancia de [TarjetaTarea].
+  /// 
+  /// [tarea] la tarea a mostrar en la tarjeta.
+  /// [onEliminar] callback que se ejecuta cuando se presiona el botón eliminar.
+  /// [onCambiarEstado] callback que se ejecuta cuando se cambia el estado de completado.
+  /// [onEditar] callback que se ejecuta cuando se presiona el botón editar.
+  /// [indiceReordenar] índice de la tarea en la lista para habilitar reordenamiento.
   const TarjetaTarea({
     super.key,
     required this.tarea,
@@ -12,12 +30,31 @@ class TarjetaTarea extends StatelessWidget {
     this.indiceReordenar,
   });
 
+  /// La tarea que se muestra en esta tarjeta.
   final Tarea tarea;
+  
+  /// Callback que se ejecuta cuando el usuario presiona el botón eliminar.
   final VoidCallback onEliminar;
+  
+  /// Callback que se ejecuta cuando el usuario cambia el estado de completado.
   final VoidCallback onCambiarEstado;
+  
+  /// Callback que se ejecuta cuando el usuario presiona el botón editar.
   final VoidCallback onEditar;
+  
+  /// Índice de la tarea en la lista para habilitar el reordenamiento.
+  /// Si es `null`, el handle de arrastre no será funcional.
   final int? indiceReordenar;
 
+  /// Construye el widget del handle de arrastre para reordenamiento.
+  /// 
+  /// Si [indiceReordenar] no es `null`, el handle será funcional y permitirá
+  /// arrastrar la tarjeta para reordenarla. Si es `null`, solo se muestra
+  /// visualmente pero no es funcional.
+  /// 
+  /// [esModoOscuro] indica si el tema actual es oscuro para aplicar los colores correctos.
+  /// 
+  /// Retorna un [Widget] con el handle de arrastre.
   Widget _construirHandleArrastre(bool esModoOscuro) {
     final handleWidget = Container(
       margin: const EdgeInsets.only(right: 12, top: 2),

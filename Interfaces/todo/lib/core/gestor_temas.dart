@@ -2,38 +2,97 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'colores_app.dart';
 
+/// Enumeración de modos de tema disponibles.
+/// 
+/// Define los tres modos de visualización soportados por la aplicación.
 enum ModoTema {
+  /// Tema claro con colores claros
   claro,
+  
+  /// Tema oscuro con colores oscuros
   oscuro,
+  
+  /// Sigue automáticamente el modo del sistema operativo
   sistema,
 }
 
+/// Enumeración de intensidades del esquema de colores Gruvbox.
+/// 
+/// Permite ajustar la intensidad de los colores del tema Gruvbox
+/// para personalizar la apariencia visual de la aplicación.
 enum IntensidadGruvbox {
+  /// Colores más suaves y apagados
   soft,
+  
+  /// Colores estándar del esquema Gruvbox
   normal,
+  
+  /// Colores más intensos y saturados
   hard,
 }
 
+/// Gestor de temas para la aplicación.
+/// 
+/// Gestiona la configuración de temas de la aplicación, incluyendo
+/// el modo (claro/oscuro/sistema) y la intensidad del esquema de
+/// colores Gruvbox. Implementa [ChangeNotifier] para notificar
+/// cambios a los widgets que escuchan.
+/// 
+/// El gestor genera dinámicamente [ThemeData] basado en la configuración
+/// actual, aplicando los colores Gruvbox correspondientes según el modo
+/// y la intensidad seleccionados.
+/// 
+/// Ejemplo de uso:
+/// ```dart
+/// final gestor = GestorTemas();
+/// gestor.cambiarModoTema(ModoTema.oscuro);
+/// gestor.cambiarIntensidad(IntensidadGruvbox.hard);
+/// final tema = gestor.obtenerTema();
+/// ```
 class GestorTemas extends ChangeNotifier {
   ModoTema _modoTema = ModoTema.sistema;
   IntensidadGruvbox _intensidad = IntensidadGruvbox.normal;
   bool _esModoOscuro = false;
 
+  /// Obtiene el modo de tema actual.
   ModoTema get modoTema => _modoTema;
+  
+  /// Obtiene la intensidad Gruvbox actual.
   IntensidadGruvbox get intensidad => _intensidad;
+  
+  /// Indica si el tema actual es oscuro.
   bool get esModoOscuro => _esModoOscuro;
 
+  /// Cambia el modo de tema de la aplicación.
+  /// 
+  /// Actualiza el modo de tema y ajusta automáticamente el modo oscuro
+  /// según corresponda. Notifica a los listeners sobre el cambio.
+  /// 
+  /// [modo] el nuevo modo de tema a aplicar.
   void cambiarModoTema(ModoTema modo) {
     _modoTema = modo;
     _actualizarModoOscuro();
     notifyListeners();
   }
 
+  /// Cambia la intensidad del esquema de colores Gruvbox.
+  /// 
+  /// Actualiza la intensidad de los colores y notifica a los listeners
+  /// sobre el cambio. Esto afecta los colores de fondo y superficie.
+  /// 
+  /// [intensidad] la nueva intensidad Gruvbox a aplicar.
   void cambiarIntensidad(IntensidadGruvbox intensidad) {
     _intensidad = intensidad;
     notifyListeners();
   }
 
+  /// Actualiza el modo oscuro basándose en el sistema operativo.
+  /// 
+  /// Solo tiene efecto si el modo de tema actual es [ModoTema.sistema].
+  /// Se llama automáticamente cuando el sistema operativo cambia su
+  /// modo claro/oscuro.
+  /// 
+  /// [esOscuro] `true` si el sistema está en modo oscuro, `false` si está en modo claro.
   void actualizarModoOscuroSistema(bool esOscuro) {
     if (_modoTema == ModoTema.sistema) {
       _esModoOscuro = esOscuro;
@@ -113,6 +172,17 @@ class GestorTemas extends ChangeNotifier {
         : ColoresApp.red;
   }
 
+  /// Genera y retorna el [ThemeData] actual basado en la configuración.
+  /// 
+  /// Crea un tema completo de Material Design aplicando los colores
+  /// Gruvbox según el modo (claro/oscuro) y la intensidad configurados.
+  /// El tema incluye configuración para:
+  /// - Esquema de colores (ColorScheme)
+  /// - Colores de fondo y superficie
+  /// - Estilos de texto usando Google Fonts (Inter)
+  /// - Temas de AppBar, FloatingActionButton, ElevatedButton, etc.
+  /// 
+  /// Retorna un [ThemeData] completamente configurado con los colores Gruvbox.
   ThemeData obtenerTema() {
     final colorFondo = _obtenerColorFondo();
     final colorSurface = _obtenerColorSurface();

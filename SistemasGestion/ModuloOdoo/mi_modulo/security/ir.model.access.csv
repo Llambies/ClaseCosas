@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_tarea_user,mi_modulo.tarea.user,model_mi_modulo_tarea,base.group_user,1,1,1,1
+access_tarea_manager,mi_modulo.tarea.manager,model_mi_modulo_tarea,base.group_system,1,1,1,1
+access_tarea_quick_add_wizard,mi_modulo.tarea.quick_add.wizard,model_mi_modulo_tarea_quick_add_wizard,base.group_user,1,1,1,1

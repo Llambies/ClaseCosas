@@ -8,20 +8,46 @@ import 'package:flutter_application_2/widgets/selector_tema.dart';
 import 'package:flutter_application_2/widgets/sin_tareas.dart';
 import 'package:flutter_application_2/widgets/tarjeta_tarea.dart';
 
+/// Pantalla principal de la aplicación de gestión de tareas.
+/// 
+/// Muestra la lista de tareas con funcionalidades de:
+/// - Agregar nuevas tareas
+/// - Editar tareas existentes
+/// - Eliminar tareas con opción de deshacer
+/// - Filtrar por categoría y estado (pendiente/terminada)
+/// - Reordenar tareas mediante arrastre
+/// - Cambiar el estado de completado de las tareas
+/// 
+/// Cuando no hay tareas, muestra el widget [SinTareas].
+/// Cuando hay tareas, muestra una lista reordenable con filtros.
 class PaginaPrincipal extends StatefulWidget {
+  /// Crea una instancia de [PaginaPrincipal].
   const PaginaPrincipal({super.key});
 
   @override
   State<PaginaPrincipal> createState() => _PaginaPrincipalState();
 }
 
+/// Estado de la pantalla principal.
+/// 
+/// Gestiona la lista de tareas y los filtros aplicados.
 class _PaginaPrincipalState extends State<PaginaPrincipal> {
+  /// Filtro de categoría aplicado. `null` significa todas las categorías.
   Categoria? _filtroCategoria;
-  // null es todos, true es Terminadas y false es Pendientes
+  
+  /// Filtro de estado aplicado.
+  /// - `null`: todas las tareas
+  /// - `true`: solo tareas terminadas
+  /// - `false`: solo tareas pendientes
   bool? _filtroEstado;
 
+  /// Lista de todas las tareas almacenadas.
   final List<Tarea> _tareas = [];
 
+  /// Obtiene la lista de tareas filtradas según los filtros aplicados.
+  /// 
+  /// Aplica los filtros de categoría y estado a la lista completa de tareas.
+  /// Retorna una nueva lista con las tareas que cumplen los criterios de filtrado.
   List<Tarea> get _tareasFiltradas {
     return _tareas.where((tarea) {
       if (_filtroCategoria != null && tarea.categoria != _filtroCategoria) {
@@ -34,12 +60,19 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
     }).toList();
   }
 
+  /// Agrega una nueva tarea a la lista.
+  /// 
+  /// [tarea] la tarea a agregar.
   void _agregarTarea(Tarea tarea) {
     setState(() {
       _tareas.add(tarea);
     });
   }
 
+  /// Actualiza una tarea existente en la lista.
+  /// 
+  /// [index] el índice de la tarea a actualizar.
+  /// [tareaEditada] la tarea con los datos actualizados.
   void _actualizarTarea(int index, Tarea tareaEditada) {
     if (index != -1 && index < _tareas.length) {
       setState(() {
@@ -48,6 +81,12 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
     }
   }
 
+  /// Elimina una tarea de la lista y muestra un SnackBar con opción de deshacer.
+  /// 
+  /// Guarda el índice de la tarea eliminada para poder restaurarla
+  /// en la misma posición si el usuario presiona "Deshacer".
+  /// 
+  /// [tarea] la tarea a eliminar.
   void _eliminarTarea(Tarea tarea) {
     // Guardamos el índice para poder restaurarla en la misma posición
     final int indice = _tareas.indexOf(tarea);
@@ -93,6 +132,11 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
     );
   }
 
+  /// Cambia el estado de completado de una tarea.
+  /// 
+  /// Alterna el estado entre completada y pendiente.
+  /// 
+  /// [index] el índice de la tarea cuyo estado se desea cambiar.
   void _cambiarEstadoTarea(int index) {
     if (index != -1 && index < _tareas.length) {
       setState(() {
@@ -103,6 +147,14 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
     }
   }
 
+  /// Construye el widget de filtros para categoría y estado.
+  /// 
+  /// Crea una fila con dos dropdowns: uno para filtrar por categoría
+  /// y otro para filtrar por estado (pendiente/terminada).
+  /// 
+  /// [context] el contexto de construcción.
+  /// 
+  /// Retorna un [Widget] con los controles de filtrado.
   Widget _construirFiltros(BuildContext context) {
     final theme = Theme.of(context);
     return Container(

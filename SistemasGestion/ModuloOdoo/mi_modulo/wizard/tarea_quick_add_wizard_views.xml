@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Vista formulario del wizard -->
+    <record id="view_tarea_quick_add_wizard_form" model="ir.ui.view">
+        <field name="name">mi_modulo.tarea.quick_add.wizard.form</field>
+        <field name="model">mi_modulo.tarea.quick_add.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Añadir Tarea Rápida">
+                <group>
+                    <field name="texto" placeholder="Ej: reunión para mañana por la mañana"/>
+                </group>
+                <footer>
+                    <button name="action_crear_tarea" string="Crear Tarea"
+                            type="object" class="btn-primary"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

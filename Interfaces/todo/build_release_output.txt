@@ -1,0 +1,6 @@
+   Woah! You appear to be trying to run flutter as root.
+   We strongly recommend running the flutter tool without superuser privileges.
+  /
+📎
+Building Linux application...                                   
+✓ Built build/linux/x64/release/bundle/flutter_application_2
