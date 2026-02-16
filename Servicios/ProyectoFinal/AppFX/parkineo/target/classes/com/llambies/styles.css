@@ -1,0 +1,218 @@
+/* ============================================
+   Parkineo - Paleta Bosque / Esmeralda
+   ============================================ */
+
+/* Variables de color (paleta bosque cálida) */
+* {
+    -parkineo-bg: #0c1929;
+    -parkineo-surface: #132f4c;
+    -parkineo-surface-hover: #1e4976;
+    -parkineo-primary: #34d399;
+    -parkineo-primary-dark: #10b981;
+    -parkineo-success: #6ee7b7;
+    -parkineo-success-dark: #34d399;
+    -parkineo-warning: #fcd34d;
+    -parkineo-danger: #f472b6;
+    -parkineo-text: #e2e8f0;
+    -parkineo-text-muted: #94a3b8;
+    -parkineo-border: #1e4976;
+}
+
+/* Fuente principal - usa system fonts modernas */
+.root {
+    -fx-font-family: "Segoe UI", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+    -fx-font-size: 14px;
+    -fx-background-color: linear-gradient(to bottom right, #0c1929 0%, #132f4c 50%, #0c1929 100%);
+    -fx-text-fill: -parkineo-text;
+}
+
+/* Títulos */
+.title-main {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -parkineo-text;
+    -fx-effect: dropshadow(gaussian, rgba(52, 211, 153, 0.35), 0, 0, 2, 2);
+}
+
+.title-section {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -parkineo-primary;
+}
+
+.subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: -parkineo-text-muted;
+}
+
+/* Paneles/cards con efecto glassmorphism */
+.panel, .card {
+    -fx-background-color: derive(-parkineo-surface, 5%);
+    -fx-background-radius: 12;
+    -fx-padding: 20;
+    -fx-border-color: -parkineo-border;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 15, 0, 0, 4);
+}
+
+/* Botones base */
+.button {
+    -fx-background-color: -parkineo-surface;
+    -fx-text-fill: -parkineo-text;
+    -fx-background-radius: 8;
+    -fx-padding: 10 20;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-border-color: -parkineo-border;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 4, 0, 0, 2);
+}
+.button:hover {
+    -fx-background-color: -parkineo-surface-hover;
+    -fx-border-color: -parkineo-primary;
+    -fx-effect: dropshadow(gaussian, rgba(52, 211, 153, 0.45), 8, 0, 0, 2);
+}
+.button:pressed {
+    -fx-background-color: derive(-parkineo-surface, -10%);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 2, 0, 0, 1);
+}
+
+/* Botón primario (acción principal) */
+.button-primary {
+    -fx-background-color: linear-gradient(to bottom, -parkineo-primary 0%, -parkineo-primary-dark 100%);
+    -fx-text-fill: #0c1929;
+    -fx-border-color: transparent;
+}
+.button-primary:hover {
+    -fx-background-color: linear-gradient(to bottom, #6ee7b7 0%, -parkineo-primary 100%);
+    -fx-effect: dropshadow(gaussian, rgba(52, 211, 153, 0.6), 10, 0, 0, 3);
+}
+.button-primary:pressed {
+    -fx-background-color: -parkineo-primary-dark;
+}
+
+/* Botón éxito (aparcar, disponible) */
+.button-success {
+    -fx-background-color: linear-gradient(to bottom, -parkineo-success 0%, -parkineo-success-dark 100%);
+    -fx-text-fill: #0c1929;
+    -fx-border-color: transparent;
+}
+.button-success:hover {
+    -fx-background-color: linear-gradient(to bottom, #a7f3d0 0%, -parkineo-success 100%);
+    -fx-effect: dropshadow(gaussian, rgba(110, 231, 183, 0.6), 10, 0, 0, 3);
+}
+
+/* Botón peligro (abandonar, borrar) */
+.button-danger {
+    -fx-background-color: linear-gradient(to bottom, #f9a8d4 0%, -parkineo-danger 100%);
+    -fx-text-fill: #0c1929;
+    -fx-border-color: transparent;
+}
+.button-danger:hover {
+    -fx-background-color: linear-gradient(to bottom, #fbcfe8 0%, #f9a8d4 100%);
+    -fx-effect: dropshadow(gaussian, rgba(244, 114, 182, 0.5), 10, 0, 0, 3);
+}
+
+/* Botón pequeño/secundario */
+.button-small {
+    -fx-padding: 6 12;
+    -fx-font-size: 12px;
+}
+
+/* Campos de texto */
+.text-field, .password-field {
+    -fx-background-color: -parkineo-bg;
+    -fx-text-fill: -parkineo-text;
+    -fx-prompt-text-fill: -parkineo-text-muted;
+    -fx-background-radius: 8;
+    -fx-padding: 10 14;
+    -fx-font-size: 14px;
+    -fx-border-color: -parkineo-border;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+}
+.text-field:focused, .password-field:focused {
+    -fx-border-color: -parkineo-primary;
+    -fx-effect: dropshadow(gaussian, rgba(52, 211, 153, 0.35), 4, 0, 0, 0);
+}
+
+/* ComboBox */
+.combo-box {
+    -fx-background-color: -parkineo-bg;
+    -fx-background-radius: 8;
+    -fx-border-color: -parkineo-border;
+    -fx-border-radius: 8;
+}
+.combo-box .list-cell {
+    -fx-text-fill: -parkineo-text;
+}
+.combo-box .arrow {
+    -fx-background-color: -parkineo-text-muted;
+}
+.combo-box:focused {
+    -fx-border-color: -parkineo-primary;
+}
+
+/* PasswordField hereda de text-field; ajuste extra si hace falta */
+.password-field {
+    -fx-background-color: -parkineo-bg;
+    -fx-text-fill: -parkineo-text;
+    -fx-prompt-text-fill: -parkineo-text-muted;
+}
+
+/* Labels */
+.label {
+    -fx-text-fill: -parkineo-text;
+}
+.label-muted {
+    -fx-text-fill: -parkineo-text-muted;
+}
+.label-success {
+    -fx-text-fill: -parkineo-success;
+}
+.label-error {
+    -fx-text-fill: -parkineo-danger;
+}
+.label-highlight {
+    -fx-text-fill: -parkineo-primary;
+    -fx-font-weight: bold;
+}
+
+/* TableView */
+.table-view {
+    -fx-background-color: transparent;
+    -fx-border-color: -parkineo-border;
+    -fx-border-radius: 8;
+}
+.table-view .column-header {
+    -fx-background-color: -parkineo-surface;
+    -fx-text-fill: -parkineo-primary;
+    -fx-font-weight: bold;
+    -fx-padding: 12 10;
+}
+.table-view .table-row-cell:odd {
+    -fx-background-color: derive(-parkineo-surface, -3%);
+}
+.table-view .table-row-cell:even {
+    -fx-background-color: -parkineo-surface;
+}
+.table-view .table-row-cell:selected {
+    -fx-background-color: derive(-parkineo-primary, -60%);
+}
+.table-view .table-cell {
+    -fx-text-fill: -parkineo-text;
+    -fx-padding: 10;
+}
+
+/* Dialog / Modal */
+.dialog-pane {
+    -fx-background-color: -parkineo-surface;
+}
+.dialog-pane .content {
+    -fx-background-color: -parkineo-surface;
+}
+.dialog-pane .header-panel {
+    -fx-background-color: derive(-parkineo-surface, 5%);
+}
